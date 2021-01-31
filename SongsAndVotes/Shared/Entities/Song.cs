@@ -12,7 +12,6 @@ namespace SongsAndVotes.Shared.Entities
 		public string Title { get; set; }
 		public string Photo { get; set; }
 		public User UserUploaded { get; set; }
-		public Artist? Artist { get; set; }
-		public Band? Band { get; set; }
+		public Artist Artist { get; set; }
 	}
 }

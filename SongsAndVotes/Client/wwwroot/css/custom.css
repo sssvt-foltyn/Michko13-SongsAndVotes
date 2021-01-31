@@ -1,0 +1,26 @@
+﻿.individual-song-container {
+    margin-right: 2%;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.song-photo {
+    width: 367px;
+    height: 225px;
+}
+
+.individual-song-container p {
+    padding: 0;
+    margin-bottom: 15px;
+    max-width: 367px;
+    height: 44px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.songs-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}

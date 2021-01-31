@@ -8,6 +8,9 @@ namespace SongsAndVotes.Shared.Entities
 {
 	public class Artist : Person
 	{
+		public Artist()
+		{
 
+		}
 	}
 }
