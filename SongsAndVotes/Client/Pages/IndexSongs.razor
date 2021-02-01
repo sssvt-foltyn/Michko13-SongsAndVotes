@@ -1,0 +1,33 @@
+﻿@page "/songs"
+
+<div>
+    <SongsList Songs="Songs" />
+</div>
+
+@code {
+    private List<Song> Songs;
+
+    protected override void OnInitialized()
+    {
+        Artist peter = new Artist();
+        peter.Name = "Peter Němec";
+
+        Artist future = new Artist();
+        future.Name = "Future";
+
+        User u1 = new User();
+        u1.Name = "Kopecek";
+
+        User u2 = new User();
+        u2.Name = "Pišta";
+
+        Songs = new List<Song>()
+        {
+            new Song(){ Title = "Nová Éra", Photo = "https://i.ytimg.com/vi/o_0lVG0Vx2k/maxresdefault.jpg", Artist = peter, UserUploaded = u1 },
+            new Song(){ Title = "Mask Off", Photo = "https://i.ytimg.com/vi/xvZqHgFz51I/maxresdefault.jpg", Artist = future, UserUploaded = u2 }
+        };
+
+
+
+    }
+}

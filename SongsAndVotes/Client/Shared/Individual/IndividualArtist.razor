@@ -1,0 +1,17 @@
+﻿<div class="individual-artist-container">
+    <a href="@artistUrl">
+        <img src="@Artist.Photo" alt="Photo" class="artist-photo" />
+    </a>
+    <p><a href="@artistUrl">@Artist.Name</a>
+    </p>
+</div>
+
+@code {
+    [Parameter] public Artist Artist { get; set; }
+    private string artistUrl;
+
+    protected override void OnInitialized()
+    {
+        artistUrl = $"artist/{Artist.ID}/{Artist.Name.Replace(" ", "-")}";
+    }
+}

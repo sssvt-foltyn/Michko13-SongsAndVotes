@@ -1,0 +1,11 @@
+﻿<div class="playlists-container">
+    <GenericList List="Playlists">
+        <ElementTemplate>
+            <IndividualPlaylist Playlist="context" />
+        </ElementTemplate>
+    </GenericList>
+</div>
+
+@code {
+    [Parameter] public List<Playlist> Playlists { get; set; }
+}

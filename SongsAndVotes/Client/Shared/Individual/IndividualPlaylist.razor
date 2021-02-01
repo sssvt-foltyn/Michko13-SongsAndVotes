@@ -1,0 +1,22 @@
+﻿<div class="individual-playlist-container">
+    <a href="@playlistURL">
+        <img src="@Playlist.Photo" alt="Photo" class="playlist-photo" />
+    </a>
+    <p>
+        <a href="@playlistURL">@Playlist.Name</a>
+        <br /> Created by: <a href="user/@Playlist.UserBy.ID">@Playlist.UserBy.Name.Replace(" ", "-")</a>
+        <br /> Rating:
+    </p>
+</div>
+
+
+
+@code {
+    [Parameter] public Playlist Playlist { get; set; }
+    private string playlistURL = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        playlistURL = $"playlist/{Playlist.ID}/{Playlist.Name.Replace(" ", "-")}";
+    }
+}

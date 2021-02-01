@@ -24,3 +24,25 @@
     flex-wrap: wrap;
     align-items: center;
 }
+
+.individual-artist-container {
+    margin-right: 2%;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.artist-photo {
+    width: 150px;
+    height: 150px;
+}
+
+.individual-playlist-container {
+    margin-right: 2%;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.playlist-photo {
+    width: 367px;
+    height: 225px;
+}
