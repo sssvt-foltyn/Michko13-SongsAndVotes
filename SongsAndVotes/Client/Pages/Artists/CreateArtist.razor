@@ -1,0 +1,19 @@
+﻿@page "/artist/create"
+@inject IArtistRepository artistRepository
+@inject NavigationManager navigationManager
+
+<h1>Create artist</h1>
+
+<ArtistForm Artist="artist" OnValidSubmit="Create" />
+
+@code {
+
+    private Artist artist = new Artist();
+
+    private async Task Create()
+    {
+        Console.WriteLine($"Saving artist: ID{artist.ID} Name:{artist.Name} Biography:{artist.Biography} Dateofbirth: {artist.DateOfBirth}");
+        await artistRepository.CreateArtist(artist);
+        navigationManager.NavigateTo("artists");
+    }
+}

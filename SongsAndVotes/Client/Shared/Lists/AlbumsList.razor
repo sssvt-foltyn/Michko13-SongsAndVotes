@@ -1,0 +1,11 @@
+﻿<div class="albums-container">
+    <GenericList List="Albums">
+        <ElementTemplate>
+            <IndividualAlbum Album="context" />
+        </ElementTemplate>
+    </GenericList>
+</div>
+
+@code {
+    [Parameter] public List<Album> Albums { get; set; }
+}

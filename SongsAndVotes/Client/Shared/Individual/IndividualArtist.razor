@@ -8,7 +8,7 @@
 
 @code {
     [Parameter] public Artist Artist { get; set; }
-    private string artistUrl;
+    private string artistUrl = string.Empty;
 
     protected override void OnInitialized()
     {

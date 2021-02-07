@@ -1,0 +1,22 @@
+﻿<div class="individual-album-container">
+    <a href="@albumURL">
+        <img src="@Album.Photo" alt="Photo" class="album-photo" />
+    </a>
+    <p>
+        <a href="@albumURL">@Album.Name</a>
+        <br /> By: <a href="artist/@Album.ArtistBy.ID">@Album.ArtistBy.Name.Replace(" ", "-")</a>
+        <br /> Rating:
+    </p>
+</div>
+
+
+
+@code {
+    [Parameter] public Album Album { get; set; }
+    private string albumURL = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        albumURL = $"album/{Album.ID}/{Album.Name.Replace(" ", "-")}";
+    }
+}

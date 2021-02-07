@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SongsAndVotes.Shared.Entities
 {
-	public class User : Person
+	public class Album : Playlist
 	{
-		public bool IsAdmin { get; set; }
+		public Artist ArtistBy { get; set; }
 	}
 }

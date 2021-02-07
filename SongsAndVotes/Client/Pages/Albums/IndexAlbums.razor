@@ -1,0 +1,28 @@
+﻿@page "/albums"
+
+<h1>Albums</h1>
+
+<div>
+    <AlbumsList Albums="Albums" />
+</div>
+
+@code {
+    private List<Album> Albums = new List<Album>();
+
+    protected override void OnInitialized()
+    {
+        Artist u1 = new Artist();
+        u1.Name = "Kopecek";
+        u1.ID = 0;
+
+        Artist u2 = new Artist();
+        u2.Name = "Pišta";
+        u2.ID = 1;
+
+        Album album1 = new Album { Name = "Best album", ID = 0, Photo = "https://images.backstreetmerch.com/images/products/bands/cd-dvd/toomt/bsi_toomt14.jpg", ArtistBy = u1 };
+        Album album2 = new Album { Name = "Worst album", ID = 1, Photo = "https://5.imimg.com/data5/RK/ML/MY-2500257/digital-photo-wedding-album-500x500.jpg", ArtistBy = u2 };
+
+        Albums.Add(album1);
+        Albums.Add(album2);
+    }
+}

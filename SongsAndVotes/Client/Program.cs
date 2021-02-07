@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SongsAndVotes.Client.Helpers;
+using SongsAndVotes.Client.Repository;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -19,7 +21,17 @@ namespace SongsAndVotes.Client
 
 			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+			ConfigureServices(builder.Services);
+
 			await builder.Build().RunAsync();
+
+		}
+
+		private static void ConfigureServices(IServiceCollection services)
+		{
+			services.AddScoped<IHttpService, HttpService>();
+			services.AddScoped<IArtistRepository, ArtistRepository>();
+			services.AddScoped<ISongRepository, SongRepository>();
 		}
 	}
 }

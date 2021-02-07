@@ -1,0 +1,19 @@
+﻿@page "/song/create"
+@inject ISongRepository songRepository
+@inject NavigationManager navigationManager
+
+<h1>Create song</h1>
+
+<SongForm Song="song" OnValidSubmit="SaveSong" />
+
+@code {
+
+    private Song song = new Song();
+
+    private async Task SaveSong()
+    {
+        Console.WriteLine($"Saving song: ID{song.ID} Name:{song.Title}");
+        await songRepository.CreateSong(song);
+        navigationManager.NavigateTo("songs");
+    }
+}

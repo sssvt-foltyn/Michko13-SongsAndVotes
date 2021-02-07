@@ -1,0 +1,46 @@
+﻿<EditForm Model="Artist" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Name:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Artist.Name" />
+            <ValidationMessage For="@(() => Artist.Name)" />
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <InputIMG Label="Picture: " OnSelectedImage="PhotoSelected" ImageURL="@photoURL" />
+    </div>
+
+    <div class="form-group">
+        <label>Date of birth:</label>
+        <div>
+            <InputDate class="form-control" @bind-Value="@Artist.DateOfBirth" />
+            <ValidationMessage For="@(()=> Artist.DateOfBirth)" />
+        </div>
+    </div>
+
+    <label>Biography:</label>
+    <div class="form-group form-bio">
+        <div>
+            <InputTextArea class="form-control" @bind-Value="@Artist.Biography" />
+            <ValidationMessage For="@(() => Artist.Biography)" />
+        </div>
+    </div>
+
+    <button class="btn btn-success" type="submit">Save changes</button>
+</EditForm>
+
+@code {
+    [Parameter] public Artist Artist { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+    private string photoURL;
+
+    private void PhotoSelected(string imageBase64)
+    {
+        Artist.Photo = string.Format("data:image/jpg;base64," + imageBase64);
+        photoURL = null;
+    }
+}

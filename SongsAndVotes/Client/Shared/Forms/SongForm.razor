@@ -1,0 +1,80 @@
+﻿@inject IArtistRepository artistRepository
+
+<EditForm Model="Song" OnValidSubmit="OnDataAnnotationsValidated">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Title:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Song.Title" />
+            <ValidationMessage For="@(()=> Song.Title)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <InputIMG Label="Picture: " OnSelectedImage="PhotoSelected" ImageURL="@photoURL" />
+    </div>
+
+    <div class="form-group">
+        <InputAudioFile Label="Audio: " OnSelectedAudioFile="AudioFileSelected" AudioFileURL="@audioFileURL" />
+    </div>
+
+    <div class="form-group">
+        <label>Artists:</label>
+        <div>
+            <MultipleSelectorTypeahead Context="artist" SearchMethod="SearchMethod" SelectedElements="SelectedArtists">
+                <MyResultTemplate>
+                    <img style="width: 50px; height: 50px;" src="@artist.Photo" />
+                    @artist.Name
+                </MyResultTemplate>
+                <MyListTemplate>
+                    <img style="width: 50px; height: 50px;" src="@artist.Photo" />  @artist.Name
+                </MyListTemplate>
+            </MultipleSelectorTypeahead>
+        </div>
+    </div>
+
+    <button class="btn btn-success" type="submit">Save changes</button>
+
+</EditForm>
+
+
+
+@code {
+    [Parameter] public Song Song { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+    [Parameter] public List<Artist> SelectedArtists { get; set; } = new List<Artist>();
+    [Parameter] public List<Artist> NotSelectedArtists { get; set; } = new List<Artist>();
+
+    private List<MultipleSelectorModel> Selected = new List<MultipleSelectorModel>();
+    private List<MultipleSelectorModel> NotSelected = new List<MultipleSelectorModel>();
+
+    private string photoURL;
+    private string audioFileURL;
+
+    private async Task OnDataAnnotationsValidated()
+    {
+        Song.ArtistsSongs = Selected.Select(x => new ArtistsSongs { ArtistID = int.Parse(x.Key) }).ToList();
+
+        await OnValidSubmit.InvokeAsync(null);
+    }
+
+    private void PhotoSelected(string imageBase64)
+    {
+        Song.Photo = string.Format("data:image/jpg;base64," + imageBase64);
+        photoURL = null;
+    }
+
+    private void AudioFileSelected(string audioBase64)
+    {
+        Song.AudioFile = string.Format("data:audio/mp3;base64," + audioBase64);
+        audioFileURL = null;
+    }
+
+    private async Task<IEnumerable<Artist>> SearchMethod(string searchText)
+    {
+        List<Artist> artists = new List<Artist>();
+        artists = await artistRepository.GetArtists();
+        return artists;
+    }
+
+}
