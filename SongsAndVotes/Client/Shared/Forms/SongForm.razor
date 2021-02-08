@@ -21,7 +21,7 @@
     <div class="form-group">
         <label>Artists:</label>
         <div>
-            <MultipleSelectorTypeahead Context="artist" SearchMethod="SearchMethod" SelectedElements="SelectedArtists">
+            <MultipleSelectorTypeahead Context="artist" SearchMethod="SearchMethod" SelectedElements="SelectedArtists" OnlyOneSelect="true">
                 <MyResultTemplate>
                     <img style="width: 50px; height: 50px;" src="@artist.Photo" />
                     @artist.Name
@@ -45,27 +45,26 @@
     [Parameter] public List<Artist> SelectedArtists { get; set; } = new List<Artist>();
     [Parameter] public List<Artist> NotSelectedArtists { get; set; } = new List<Artist>();
 
-    private List<MultipleSelectorModel> Selected = new List<MultipleSelectorModel>();
-    private List<MultipleSelectorModel> NotSelected = new List<MultipleSelectorModel>();
-
     private string photoURL;
     private string audioFileURL;
 
     private async Task OnDataAnnotationsValidated()
     {
-        Song.ArtistsSongs = Selected.Select(x => new ArtistsSongs { ArtistID = int.Parse(x.Key) }).ToList();
+        Song.Artist = SelectedArtists[0];
 
         await OnValidSubmit.InvokeAsync(null);
     }
 
     private void PhotoSelected(string imageBase64)
     {
+        Console.WriteLine("photo selected");
         Song.Photo = string.Format("data:image/jpg;base64," + imageBase64);
         photoURL = null;
     }
 
     private void AudioFileSelected(string audioBase64)
     {
+        Console.WriteLine("audio selected");
         Song.AudioFile = string.Format("data:audio/mp3;base64," + audioBase64);
         audioFileURL = null;
     }

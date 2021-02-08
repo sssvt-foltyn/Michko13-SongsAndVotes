@@ -11,11 +11,12 @@
 </div>
 
 @code{
-    private List<Song> Songs = new List<Song>();
+    private List<Song> Songs;
     private List<Artist> Artists;
 
     protected override async Task OnInitializedAsync()
     {
         Artists = await artistRepository.GetArtists();
+        Songs = await songRepository.GetSongs();
     }
 }

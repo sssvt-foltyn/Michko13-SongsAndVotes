@@ -12,7 +12,7 @@
     {
         var imageFiles = e.GetMultipleFiles();
         var buffer = new byte[imageFiles[0].Size];
-        await imageFiles[0].OpenReadStream().ReadAsync(buffer);
+        await imageFiles[0].OpenReadStream(20971520).ReadAsync(buffer);
         audioBase64 = Convert.ToBase64String(buffer);
         await OnSelectedAudioFile.InvokeAsync(audioBase64);
         AudioFileURL = null;

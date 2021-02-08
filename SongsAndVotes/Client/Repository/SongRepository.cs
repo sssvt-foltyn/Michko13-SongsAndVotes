@@ -1,4 +1,5 @@
 ﻿using SongsAndVotes.Client.Helpers;
+using SongsAndVotes.Shared.DTOs;
 using SongsAndVotes.Shared.Entities;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,29 @@ namespace SongsAndVotes.Client.Repository
 		{
 			this.httpService = httpService;
 		}
+
+		public async Task<List<Song>> GetSongs()
+		{
+			var response = await httpService.Get<List<Song>>(url);
+			if (!response.Success)
+			{
+				throw new ApplicationException(await response.GetBody());
+			}
+
+			return response.Response;
+		}
+
+		public async Task<Song> GetSongDetails(int id)
+		{
+			var response = await httpService.Get<Song>($"{url}/{id}");
+			if (!response.Success)
+			{
+				throw new ApplicationException(await response.GetBody());
+			}
+
+			return response.Response;
+		}
+
 
 		public async Task CreateSong(Song song)
 		{

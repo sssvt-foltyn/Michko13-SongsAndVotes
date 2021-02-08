@@ -3,21 +3,51 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SongsAndVotes.Server;
 
 namespace SongsAndVotes.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210207135641_Change1")]
+    partial class Change1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
+
+            modelBuilder.Entity("SongsAndVotes.Shared.Entities.Album", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("ArtistByID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserByID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ArtistByID");
+
+                    b.HasIndex("UserByID");
+
+                    b.ToTable("Albums");
+                });
 
             modelBuilder.Entity("SongsAndVotes.Shared.Entities.Artist", b =>
                 {
@@ -43,33 +73,29 @@ namespace SongsAndVotes.Server.Migrations
                     b.ToTable("Artists");
                 });
 
-            modelBuilder.Entity("SongsAndVotes.Shared.Entities.Playlist", b =>
+            modelBuilder.Entity("SongsAndVotes.Shared.Entities.ArtistsSongs", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ArtistID")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Photo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserByID")
+                    b.Property<int>("SongsID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("UserByID");
+                    b.HasIndex("ArtistID");
 
-                    b.ToTable("Playlists");
+                    b.HasIndex("SongsID");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Playlist");
+                    b.ToTable("ArtistsSongs");
                 });
 
             modelBuilder.Entity("SongsAndVotes.Shared.Entities.Song", b =>
@@ -78,6 +104,9 @@ namespace SongsAndVotes.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
+
+                    b.Property<int?>("AlbumID")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ArtistID")
                         .HasColumnType("int");
@@ -88,23 +117,20 @@ namespace SongsAndVotes.Server.Migrations
                     b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PlaylistID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserID")
+                    b.Property<int?>("UserUploadedID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
+                    b.HasIndex("AlbumID");
+
                     b.HasIndex("ArtistID");
 
-                    b.HasIndex("PlaylistID");
-
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserUploadedID");
 
                     b.ToTable("Songs");
                 });
@@ -138,38 +164,51 @@ namespace SongsAndVotes.Server.Migrations
 
             modelBuilder.Entity("SongsAndVotes.Shared.Entities.Album", b =>
                 {
-                    b.HasBaseType("SongsAndVotes.Shared.Entities.Playlist");
+                    b.HasOne("SongsAndVotes.Shared.Entities.Artist", "ArtistBy")
+                        .WithMany()
+                        .HasForeignKey("ArtistByID");
 
-                    b.Property<int?>("ArtistByID")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ArtistByID");
-
-                    b.HasDiscriminator().HasValue("Album");
-                });
-
-            modelBuilder.Entity("SongsAndVotes.Shared.Entities.Playlist", b =>
-                {
                     b.HasOne("SongsAndVotes.Shared.Entities.User", "UserBy")
                         .WithMany()
                         .HasForeignKey("UserByID");
 
+                    b.Navigation("ArtistBy");
+
                     b.Navigation("UserBy");
+                });
+
+            modelBuilder.Entity("SongsAndVotes.Shared.Entities.ArtistsSongs", b =>
+                {
+                    b.HasOne("SongsAndVotes.Shared.Entities.Artist", "Artist")
+                        .WithMany("ArtistsSongs")
+                        .HasForeignKey("ArtistID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SongsAndVotes.Shared.Entities.Song", "Songs")
+                        .WithMany("ArtistsSongs")
+                        .HasForeignKey("SongsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Artist");
+
+                    b.Navigation("Songs");
                 });
 
             modelBuilder.Entity("SongsAndVotes.Shared.Entities.Song", b =>
                 {
+                    b.HasOne("SongsAndVotes.Shared.Entities.Album", null)
+                        .WithMany("Songs")
+                        .HasForeignKey("AlbumID");
+
                     b.HasOne("SongsAndVotes.Shared.Entities.Artist", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistID");
 
-                    b.HasOne("SongsAndVotes.Shared.Entities.Playlist", null)
-                        .WithMany("Songs")
-                        .HasForeignKey("PlaylistID");
-
                     b.HasOne("SongsAndVotes.Shared.Entities.User", "UserUploaded")
                         .WithMany()
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserUploadedID");
 
                     b.Navigation("Artist");
 
@@ -178,16 +217,17 @@ namespace SongsAndVotes.Server.Migrations
 
             modelBuilder.Entity("SongsAndVotes.Shared.Entities.Album", b =>
                 {
-                    b.HasOne("SongsAndVotes.Shared.Entities.Artist", "ArtistBy")
-                        .WithMany()
-                        .HasForeignKey("ArtistByID");
-
-                    b.Navigation("ArtistBy");
+                    b.Navigation("Songs");
                 });
 
-            modelBuilder.Entity("SongsAndVotes.Shared.Entities.Playlist", b =>
+            modelBuilder.Entity("SongsAndVotes.Shared.Entities.Artist", b =>
                 {
-                    b.Navigation("Songs");
+                    b.Navigation("ArtistsSongs");
+                });
+
+            modelBuilder.Entity("SongsAndVotes.Shared.Entities.Song", b =>
+                {
+                    b.Navigation("ArtistsSongs");
                 });
 #pragma warning restore 612, 618
         }

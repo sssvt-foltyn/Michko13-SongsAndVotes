@@ -2,10 +2,12 @@
     <a href="@songURL">
         <img src="@Song.Photo" alt="Photo" class="song-photo" />
     </a>
-    <p><a href="@songURL">@Song.Title</a>
-    by <a href="artist/@Song.Artist.ID">@Song.Artist.Name</a>
-    <br /> Uploaded by: <a href="user/@Song.UserUploaded.ID">@Song.UserUploaded.Name.Replace(" ", "-")</a>
-    <br /> Rating: </p>
+    <p>
+        <a href="@songURL">@Song.Title</a>
+        by <a href="artist/@Song.Artist.ID">@Song.Artist.Name</a>
+        @*<br /> Uploaded by: <a href="user/@Song.UserUploaded.ID">@Song.UserUploaded.Name.Replace(" ", "-")</a>*@
+        <br /> Rating:
+    </p>
 </div>
 
 

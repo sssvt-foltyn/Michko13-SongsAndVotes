@@ -28,12 +28,24 @@
     [Parameter] public RenderFragment<T> MyResultTemplate { get; set; }
     [Parameter] public RenderFragment<T> MyListTemplate { get; set; }
     T draggedItem;
+    [Parameter] public bool OnlyOneSelect { get; set; }
 
     private void SelectedElement(T item)
     {
-        if (!SelectedElements.Any(x => x.Equals(item)))
+        if (!OnlyOneSelect)
         {
-            SelectedElements.Add(item);
+            if (!SelectedElements.Any(x => x.Equals(item)))
+            {
+                SelectedElements.Add(item);
+            }
+        }
+        else
+        {
+            SelectedElements.Clear();
+            if (!SelectedElements.Any(x => x.Equals(item)))
+            {
+                SelectedElements.Add(item);
+            }
         }
     }
 

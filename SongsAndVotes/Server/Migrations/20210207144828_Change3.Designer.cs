@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SongsAndVotes.Server;
 
 namespace SongsAndVotes.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210207144828_Change3")]
+    partial class Change3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,7 +97,7 @@ namespace SongsAndVotes.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserID")
+                    b.Property<int?>("UserUploadedID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -104,7 +106,7 @@ namespace SongsAndVotes.Server.Migrations
 
                     b.HasIndex("PlaylistID");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserUploadedID");
 
                     b.ToTable("Songs");
                 });
@@ -169,7 +171,7 @@ namespace SongsAndVotes.Server.Migrations
 
                     b.HasOne("SongsAndVotes.Shared.Entities.User", "UserUploaded")
                         .WithMany()
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserUploadedID");
 
                     b.Navigation("Artist");
 

@@ -1,4 +1,5 @@
-﻿using SongsAndVotes.Shared.Entities;
+﻿using SongsAndVotes.Shared.DTOs;
+using SongsAndVotes.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,7 @@ namespace SongsAndVotes.Client.Repository
 	public interface ISongRepository
 	{
 		Task CreateSong(Song song);
+		Task<Song> GetSongDetails(int id);
+		Task<List<Song>> GetSongs();
 	}
 }

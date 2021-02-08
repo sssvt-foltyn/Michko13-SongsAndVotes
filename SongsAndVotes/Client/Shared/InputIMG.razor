@@ -25,7 +25,7 @@
     {
         var imageFiles = e.GetMultipleFiles();
         var buffer = new byte[imageFiles[0].Size];
-        await imageFiles[0].OpenReadStream().ReadAsync(buffer);
+        await imageFiles[0].OpenReadStream(20971520).ReadAsync(buffer);
         imageBase64 = Convert.ToBase64String(buffer);
         await OnSelectedImage.InvokeAsync(imageBase64);
         ImageURL = null;

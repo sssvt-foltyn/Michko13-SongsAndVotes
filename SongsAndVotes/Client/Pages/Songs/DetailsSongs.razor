@@ -1,14 +1,49 @@
 ﻿@page "/song/{SongID:int}"
 @page "/song/{SongID:int}/{SongName}"
+@inject ISongRepository songRepository
 
-<h3>DetailsSongs</h3>
+@if (song == null)
+{
+    <text>Loading...</text>
+}
+else
+{
+<div class="details-song-container">
+    <img src="@song.Photo" alt="Photo" class="song-photo" />
+    <p>
+        @song.Title
+        by @song.Artist.Name
+        @*<br /> Uploaded by: <a href="user/@Song.UserUploaded.ID">@Song.UserUploaded.Name.Replace(" ", "-")</a>*@
+        <br /> Rating:
+    </p>
+
+    <div class="form-group">
+        <a class="btn btn-info" @onclick=@(()=>playing=!playing)>@(playing ? "Play" : "Stop")</a>
+    </div>
+
+    <div>
+        @if (!playing)
+        {
+            <audio autoplay controls> <source src="@song.AudioFile" /> </audio>
+        }
+        else
+        {
+            <audio controls muted> <source src="@song.AudioFile" /> </audio>
+        }
+    </div>
+</div>
+
+}
 
 @code {
     [Parameter] public int SongID { get; set; }
     [Parameter] public string SongName { get; set; }
+    private Song song;
+
+    private bool playing = false;
 
     protected async override Task OnInitializedAsync()
     {
-
+        song = await songRepository.GetSongDetails(SongID);
     }
 }

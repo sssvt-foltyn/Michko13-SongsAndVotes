@@ -12,7 +12,6 @@
 
     private async Task Create()
     {
-        Console.WriteLine($"Saving artist: ID{artist.ID} Name:{artist.Name} Biography:{artist.Biography} Dateofbirth: {artist.DateOfBirth}");
         await artistRepository.CreateArtist(artist);
         navigationManager.NavigateTo("artists");
     }
