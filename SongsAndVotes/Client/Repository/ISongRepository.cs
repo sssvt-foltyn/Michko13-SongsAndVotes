@@ -1,4 +1,4 @@
-﻿using SongsAndVotes.Shared.DTOs;
+﻿
 using SongsAndVotes.Shared.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,8 @@ namespace SongsAndVotes.Client.Repository
 	public interface ISongRepository
 	{
 		Task CreateSong(Song song);
+		Task EditSong(Song song);
+		Task<List<Song>> GetSongByArtist(int artistID, string artistName);
 		Task<Song> GetSongDetails(int id);
 		Task<List<Song>> GetSongs();
 	}

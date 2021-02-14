@@ -5,17 +5,17 @@
     <div class="form-group">
         <label>Title:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Song.Title" />
+            <InputText class="form-control input-text-form" @bind-Value="@Song.Title" />
             <ValidationMessage For="@(()=> Song.Title)" />
         </div>
     </div>
 
     <div class="form-group">
-        <InputIMG Label="Picture: " OnSelectedImage="PhotoSelected" ImageURL="@photoURL" />
+        <InputIMG Label="Picture:" OnSelectedImage="PhotoSelected" ImageURL="@imageURL" />
     </div>
 
     <div class="form-group">
-        <InputAudioFile Label="Audio: " OnSelectedAudioFile="AudioFileSelected" AudioFileURL="@audioFileURL" />
+        <InputAudioFile Label="Audio:" OnSelectedAudioFile="AudioFileSelected" AudioURL="@audioURL"/>
     </div>
 
     <div class="form-group">
@@ -33,8 +33,7 @@
         </div>
     </div>
 
-    <button class="btn btn-success" type="submit">Save changes</button>
-
+    <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" StartIcon="@Icons.Material.Filled.Save" IconColor="Color.Primary" Size="Size.Large" >Save changes</MudButton>
 </EditForm>
 
 
@@ -45,8 +44,17 @@
     [Parameter] public List<Artist> SelectedArtists { get; set; } = new List<Artist>();
     [Parameter] public List<Artist> NotSelectedArtists { get; set; } = new List<Artist>();
 
-    private string photoURL;
-    private string audioFileURL;
+    private string imageURL;
+    private string audioURL;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(Song.Photo))
+        {
+            imageURL = Song.Photo;
+            Song.Photo = null;
+        }
+    }
 
     private async Task OnDataAnnotationsValidated()
     {
@@ -57,22 +65,20 @@
 
     private void PhotoSelected(string imageBase64)
     {
-        Console.WriteLine("photo selected");
-        Song.Photo = string.Format("data:image/jpg;base64," + imageBase64);
-        photoURL = null;
+        Song.Photo = imageBase64;
+        imageURL = null;
     }
 
     private void AudioFileSelected(string audioBase64)
     {
-        Console.WriteLine("audio selected");
-        Song.AudioFile = string.Format("data:audio/mp3;base64," + audioBase64);
-        audioFileURL = null;
+        Song.AudioFile = audioBase64;
+        audioURL = null;
     }
 
     private async Task<IEnumerable<Artist>> SearchMethod(string searchText)
     {
         List<Artist> artists = new List<Artist>();
-        artists = await artistRepository.GetArtists();
+        artists = await artistRepository.GetArtistsByName(searchText);
         return artists;
     }
 

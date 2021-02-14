@@ -1,16 +1,69 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
+<MudThemeProvider Theme="_currentTheme" />
+<MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.ExtraSmall" />
+<MudSnackbarProvider />
+
+<MudLayout RightToLeft="@rightToLeft">
+    <MudAppBar Elevation="25">
+        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+            <MudText Typo="Typo.h5" Class="mudblazor-appbar-brand-text">Songs And Votes</MudText>
+        </MudHidden>
+        <MudAppBarSpacer />
+
+        <MudAppBarSpacer />
+        <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+
+        </MudHidden>
+    </MudAppBar>
+
+    <MudDrawer @bind-Open=_drawerOpen Elevation="25" Class="mudblazor-appbar-band">
+        <MudDrawerHeader Class="mudblazor-brand" LinkToIndex="true">
+            <img src="logo.png" class="logo"/>
+        </MudDrawerHeader>
         <NavMenu />
-    </div>
-
-    <div class="main">
-        <div class="top-row px-4">
-        </div>
-
-        <div class="content px-4">
+    </MudDrawer>
+    <MudMainContent Class="mudblazor-main-content">
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="margin-top: 20px;">
             @Body
-        </div>
-    </div>
-</div>
+        </MudContainer>
+
+        <MudScrollToTop TopOffset="400">
+            <MudFab Icon="@Icons.Material.Filled.KeyboardArrowUp" Color="Color.Primary" />
+        </MudScrollToTop>
+    </MudMainContent>
+
+</MudLayout>
+
+@code
+{
+
+    private bool _drawerOpen = true;
+    private bool rightToLeft = false;
+    private string searchValue = string.Empty;
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    protected override void OnInitialized()
+    {
+        _currentTheme = _defaultTheme;
+
+    }
+
+    private MudTheme _currentTheme = new MudTheme();
+    private readonly MudTheme _defaultTheme =
+        new MudTheme()
+        {
+            Palette = new Palette()
+            {
+                Black = "#272c34"
+            }
+        };
+ 
+
+}

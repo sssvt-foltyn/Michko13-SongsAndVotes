@@ -1,21 +1,45 @@
 ﻿<label>@Label</label>
-<InputFile accept=".mp3" OnChange="OnChange" />
+<InputFile id="audioFileInput" accept=".mp3" OnChange="OnChange" hidden multiple />
+<MudButton HtmlTag="label"
+           Variant="Variant.Filled"
+           Color="Color.Primary"
+           StartIcon="@Icons.Filled.Audiotrack"
+           for="audioFileInput">
+    Upload audio
+</MudButton>
+
+@if (AudioURL != null)
+{
+    <div style="margin:10px">
+        <img src="@AudioURL" style="width: 400px;" />
+    </div>
+}
+
+@if (file != null)
+{
+    <div style="margin-top: 10px; margin-bottom: 10px">
+        <p>@file.Name <code>@file.Size bytes</code></p>
+    </div>
+}
+
 
 @code {
-    [Parameter] public string Label { get; set; } = "Image";
+    [Parameter] public string Label { get; set; } = "Audio";
     [Parameter] public EventCallback<string> OnSelectedAudioFile { get; set; }
-    [Parameter] public string AudioFileURL { get; set; }
+    [Parameter] public string AudioURL { get; set; }
 
+    private IBrowserFile file;
     private string audioBase64;
 
     async Task OnChange(InputFileChangeEventArgs e)
     {
-        var imageFiles = e.GetMultipleFiles();
-        var buffer = new byte[imageFiles[0].Size];
-        await imageFiles[0].OpenReadStream(20971520).ReadAsync(buffer);
+        var audioFiles = e.GetMultipleFiles();
+        var buffer = new byte[audioFiles[0].Size];
+        await audioFiles[0].OpenReadStream(20971520).ReadAsync(buffer);
         audioBase64 = Convert.ToBase64String(buffer);
         await OnSelectedAudioFile.InvokeAsync(audioBase64);
-        AudioFileURL = null;
+        file = audioFiles[0];
+        AudioURL = null;
         StateHasChanged();
     }
 }

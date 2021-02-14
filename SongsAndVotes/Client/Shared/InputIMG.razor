@@ -1,5 +1,13 @@
 ﻿<label>@Label</label>
-<InputFile accept=".jpg,.jpeg" OnChange="OnChange" />
+<InputFile id="imageInput" accept=".jpg,.jpeg" OnChange="OnChange" hidden multiple />
+
+<MudButton HtmlTag="label"
+           Variant="Variant.Filled"
+           Color="Color.Primary"
+           StartIcon="@Icons.Filled.Image"
+           for="imageInput">
+    Upload picture
+</MudButton>
 
 @if (imageBase64 != null)
 {
@@ -7,6 +15,7 @@
         <img src="data:image/jpeg;base64, @imageBase64" style="width: 400px;" />
     </div>
 }
+
 @if (ImageURL != null)
 {
     <div style="margin:10px">
@@ -14,12 +23,21 @@
     </div>
 }
 
+@if (file != null)
+{
+    <div style="margin-top: 10px; margin-bottom: 10px">
+        <p>@file.Name <code>@file.Size bytes</code></p>
+    </div>
+}
+
+
 @code {
     [Parameter] public string Label { get; set; } = "Image";
     [Parameter] public EventCallback<string> OnSelectedImage { get; set; }
     [Parameter] public string ImageURL { get; set; }
 
     private string imageBase64;
+    private IBrowserFile file;
 
     async Task OnChange(InputFileChangeEventArgs e)
     {
@@ -28,6 +46,7 @@
         await imageFiles[0].OpenReadStream(20971520).ReadAsync(buffer);
         imageBase64 = Convert.ToBase64String(buffer);
         await OnSelectedImage.InvokeAsync(imageBase64);
+        file = imageFiles[0];
         ImageURL = null;
         StateHasChanged();
     }

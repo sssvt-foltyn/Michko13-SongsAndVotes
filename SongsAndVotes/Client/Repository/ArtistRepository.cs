@@ -28,9 +28,40 @@ namespace SongsAndVotes.Client.Repository
 			return response.Response;
 		}
 
+		public async Task<List<Artist>> GetArtistsByName(string name)
+		{
+			var response = await httpService.Get<List<Artist>>($"{url}/search/{name}");
+			if (!response.Success)
+			{
+				throw new ApplicationException(await response.GetBody());
+			}
+
+			return response.Response;
+		}
+
 		public async Task CreateArtist(Artist artist)
 		{
 			var response = await httpService.Post(url, artist);
+			if (!response.Success)
+			{
+				throw new ApplicationException(await response.GetBody());
+			}
+		}
+
+		public async Task<Artist> GetArtistDetails(int id)
+		{
+			var response = await httpService.Get<Artist>($"{url}/{id}");
+			if (!response.Success)
+			{
+				throw new ApplicationException(await response.GetBody());
+			}
+
+			return response.Response;
+		}
+
+		public async Task EditArtist(Artist artist)
+		{
+			var response = await httpService.Put(url, artist);
 			if (!response.Success)
 			{
 				throw new ApplicationException(await response.GetBody());

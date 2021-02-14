@@ -3,44 +3,50 @@
     <div class="form-group">
         <label>Name:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Artist.Name" />
+            <InputText class="form-control input-text-form" @bind-Value="@Artist.Name" />
             <ValidationMessage For="@(() => Artist.Name)" />
         </div>
     </div>
 
 
     <div class="form-group">
-        <InputIMG Label="Picture: " OnSelectedImage="PhotoSelected" ImageURL="@photoURL" />
+        <InputIMG Label="Picture: " OnSelectedImage="PhotoSelected" ImageURL="@imageURL" />
     </div>
 
     <div class="form-group">
-        <label>Date of birth:</label>
         <div>
-            <InputDate class="form-control" @bind-Value="@Artist.DateOfBirth" />
+            <MudDatePicker Label="Date of birth" @bind-Date="@Artist.DateOfBirth" />
             <ValidationMessage For="@(()=> Artist.DateOfBirth)" />
         </div>
     </div>
 
-    <label>Biography:</label>
     <div class="form-group form-bio">
         <div>
-            <InputTextArea class="form-control" @bind-Value="@Artist.Biography" />
+            <MudTextField Class="input-text-form" T="string" Label="Biography" Variant="Variant.Text" Lines="5" @bind-Value="@Artist.Biography" />
             <ValidationMessage For="@(() => Artist.Biography)" />
         </div>
     </div>
-
-    <button class="btn btn-success" type="submit">Save changes</button>
+    <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" StartIcon="@Icons.Material.Filled.Save" IconColor="Color.Primary" Size="Size.Large">Save changes</MudButton>
 </EditForm>
 
 @code {
     [Parameter] public Artist Artist { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
 
-    private string photoURL;
+    private string imageURL;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(Artist.Photo))
+        {
+            imageURL = Artist.Photo;
+            Artist.Photo = null;
+        }
+    }
 
     private void PhotoSelected(string imageBase64)
     {
-        Artist.Photo = string.Format("data:image/jpg;base64," + imageBase64);
-        photoURL = null;
+        Artist.Photo = imageBase64;
+        imageURL = null;
     }
 }

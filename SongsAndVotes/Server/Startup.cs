@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SongsAndVotes.Server.Controllers.Helpers;
+using SongsAndVotes.Server.Helpers;
 using System.Linq;
 
 namespace SongsAndVotes.Server
@@ -26,6 +28,8 @@ namespace SongsAndVotes.Server
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddControllersWithViews();
 			services.AddRazorPages();
+
+			services.AddScoped<IFileStorageService, AzureStorageService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

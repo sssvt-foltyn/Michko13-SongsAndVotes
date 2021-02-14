@@ -1,0 +1,24 @@
+﻿@page "/artist/edit/{ArtistID:int}"
+@inject IArtistRepository artistRepository
+@inject NavigationManager navigationManager
+
+<MudText Typo="@Typo.h4" Style="margin-bottom: 15px;">Edit artist</MudText>
+
+<ArtistForm Artist="artist" OnValidSubmit="Edit" />
+
+@code {
+    [Parameter] public int ArtistID { get; set; }
+
+    private Artist artist = new Artist();
+
+    protected override async Task OnInitializedAsync()
+    {
+        artist = await artistRepository.GetArtistDetails(ArtistID);
+    }
+
+    private async Task Edit()
+    {
+        await artistRepository.EditArtist(artist);
+        navigationManager.NavigateTo("artists");
+    }
+}

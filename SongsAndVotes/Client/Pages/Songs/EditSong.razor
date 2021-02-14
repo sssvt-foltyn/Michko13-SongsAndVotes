@@ -1,0 +1,24 @@
+﻿@page "/song/edit/{SongID:int}"
+@inject ISongRepository songRepository
+@inject NavigationManager navigationManager
+
+<MudText Typo="@Typo.h4" Style="margin-bottom: 15px;">Edit song</MudText>
+
+<SongForm Song="song" OnValidSubmit="Edit" />
+
+@code {
+    [Parameter] public int SongID { get; set; }
+
+    private Song song = new Song();
+
+    protected override async Task OnInitializedAsync()
+    {
+        song = await songRepository.GetSongDetails(SongID);
+    }
+
+    private async Task Edit()
+    {
+        await songRepository.EditSong(song);
+        navigationManager.NavigateTo("songs");
+    }
+}

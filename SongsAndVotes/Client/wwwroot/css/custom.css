@@ -36,12 +36,13 @@
 }
 
 .form-bio textarea {
-    width: 700px;
+    width: 1500px;
     height: 250px;
     margin-right: 15px;
 }
 
 .blazored-typeahead {
+    width: 600px;
 }
 
 .blazored-typeahead__controls {
@@ -67,7 +68,7 @@
 
 .blazored-typeahead__input-mask-wrapper {
     display: flex;
-    width: 100%;
+    width: 600px;
 }
 
 .blazored-typeahead__input-mask {
@@ -162,4 +163,18 @@
     }
 }
 
+.logo {
+    width: 150px;
+    height: 100px;
+    display: block;
+    margin: 0 auto;
+}
+
+.form-group label{
+    font-size: 17px;
+}
+
+.input-text-form{
+    width: 600px;
+}
 

@@ -9,6 +9,9 @@ namespace SongsAndVotes.Client.Repository
 	public interface IArtistRepository
 	{
 		Task CreateArtist(Artist artist);
+		Task EditArtist(Artist artist);
+		Task<Artist> GetArtistDetails(int id);
 		Task<List<Artist>> GetArtists();
+		Task<List<Artist>> GetArtistsByName(string name);
 	}
 }

@@ -2,10 +2,12 @@
 @inject ISongRepository songRepository
 @inject IArtistRepository artistRepository
 
+<h2>Songs</h2>
 <div>
     <SongsList Songs="Songs" />
 </div>
 
+<h2>Artists</h2>
 <div>
     <ArtistsList Artists="Artists" />
 </div>
@@ -20,3 +22,4 @@
         Songs = await songRepository.GetSongs();
     }
 }
+

@@ -1,5 +1,42 @@
-﻿<h3>DetailsArtist</h3>
+﻿@page "/artist/{ArtistID:int}"
+@page "/artist/{ArtistID:int}/{ArtistName}"
+@inject IArtistRepository artistRepository
+@inject ISongRepository songRepository
+
+@if (artist == null)
+{
+    <text>Loading...</text>
+}
+else
+{
+<div class="details-artist-container">
+    <img src="@artist.Photo" alt="Photo" class="artist-photo" />
+    <p>
+        @artist.Name
+        <br />
+        Date of birth: @artist.DateOfBirth
+        <br />
+        Biography: @artist.Biography
+    </p>
+</div>
+}
+
+
+<h2>Songs</h2>
+<div>
+    <SongsList Songs="songs" />
+</div>
 
 @code {
+    [Parameter] public int ArtistID { get; set; }
+    [Parameter] public string ArtistName { get; set; }
 
+    private Artist artist;
+    private List<Song> songs;
+
+    protected async override Task OnInitializedAsync()
+    {
+        songs = await songRepository.GetSongByArtist(ArtistID, ArtistName);
+        artist = await artistRepository.GetArtistDetails(ArtistID);
+    }
 }
