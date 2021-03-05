@@ -1,6 +1,8 @@
 ﻿@page "/artist/edit/{ArtistID:int}"
 @inject IArtistRepository artistRepository
 @inject NavigationManager navigationManager
+@attribute [Authorize]
+
 
 <MudText Typo="@Typo.h4" Style="margin-bottom: 15px;">Edit artist</MudText>
 

@@ -10,6 +10,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using MudBlazor.Services;
+using Microsoft.AspNetCore.Components.Authorization;
+using SongsAndVotes.Client.Auth;
 
 namespace SongsAndVotes.Client
 {
@@ -20,7 +22,7 @@ namespace SongsAndVotes.Client
 			var builder = WebAssemblyHostBuilder.CreateDefault(args);
 			builder.RootComponents.Add<App>("#app");
 
-			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+			builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 			builder.Services.AddMudServices();
 
 			ConfigureServices(builder.Services);
@@ -34,6 +36,15 @@ namespace SongsAndVotes.Client
 			services.AddScoped<IHttpService, HttpService>();
 			services.AddScoped<IArtistRepository, ArtistRepository>();
 			services.AddScoped<ISongRepository, SongRepository>();
+			services.AddScoped<IAccountRepository, AccountRepository>();
+			services.AddAuthorizationCore();
+
+			services.AddScoped<JWTAuthenticationStateProvider>();
+			services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
+				provider => provider.GetRequiredService<JWTAuthenticationStateProvider>());
+
+			services.AddScoped<ILoginService, JWTAuthenticationStateProvider>(
+				provider => provider.GetRequiredService<JWTAuthenticationStateProvider>());
 		}
 	}
 }

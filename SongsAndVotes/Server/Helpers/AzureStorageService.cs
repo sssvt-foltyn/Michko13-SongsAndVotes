@@ -32,10 +32,10 @@ namespace SongsAndVotes.Server.Controllers.Helpers
             await blob.DeleteIfExistsAsync();
         }
 
-        public async Task<string> EditFile(byte[] content, string extension,
-            string containerName, string fileRoute)
+        public async Task<string> EditFile(byte[] content, string extension, string containerName, string fileRoute)
         {
             await DeleteFile(fileRoute, containerName);
+
             return await SaveFile(content, extension, containerName);
         }
 
@@ -50,7 +50,9 @@ namespace SongsAndVotes.Server.Controllers.Helpers
             {
                 await blob.UploadAsync(ms);
             }
+            Console.WriteLine(blob.Uri.ToString());
             return blob.Uri.ToString();
+
         }
     }
 }

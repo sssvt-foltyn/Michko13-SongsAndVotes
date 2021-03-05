@@ -1,17 +1,53 @@
-﻿<div class="individual-artist-container">
-    <a href="@artistUrl">
-        <img src="@Artist.Photo" alt="Photo" class="artist-photo" />
-    </a>
-    <p><a href="@artistUrl">@Artist.Name</a>
-    </p>
+﻿@inject IArtistRepository artistRepository
+
+<div class="individual-artist-container">
+
+    <MudCard>
+
+        <MudCardContent>
+            <a href="@artistURL">
+                <img src="@Artist.Photo" alt="Photo" class="artist-photo" />
+            </a>
+            <MudText Typo="Typo.h6"><a href="@artistURL">@Artist.Name</a></MudText>
+
+            <AuthorizeView>
+                <Authorized>
+                    <div class="edit-delete-button-container">
+                        <div class="edit-delete-button">
+                            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Link="@artistEditURL" Color="Color.Primary">Edit</MudButton>
+                        </div>
+
+                        <div class="edit-delete-button">
+                            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" @onclick="@(() => DeleteArtist(Artist.ID))" Link="/artists" Color="Color.Error">Delete</MudButton>
+                        </div>
+                    </div>
+
+                </Authorized>
+            </AuthorizeView>
+
+        </MudCardContent>
+
+    </MudCard>
+
+
+
 </div>
 
 @code {
     [Parameter] public Artist Artist { get; set; }
-    private string artistUrl = string.Empty;
+
+    private string artistURL = string.Empty;
+    private string artistEditURL = string.Empty;
 
     protected override void OnInitialized()
     {
-        artistUrl = $"artist/{Artist.ID}/{Artist.Name.Replace(" ", "-")}";
+        artistURL = $"artist/{Artist.ID}/{Artist.Name.Replace(" ", "-")}";
+        artistEditURL = $"artist/edit/{Artist.ID}";
+    }
+
+    private async Task DeleteArtist(int id)
+    {
+        await artistRepository.DeleteArtist(id);
     }
 }
+

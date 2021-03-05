@@ -1,0 +1,110 @@
+﻿@inject IAccountRepository accountRepository
+@inject ILoginService loginService
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="userInfo" OnValidSubmit="Register">
+    <DataAnnotationsValidator />
+    <MudDialog>
+        <DialogContent>
+
+            <MudForm @bind-IsValid="@success">
+                <div class="login-dialog-container">
+
+                    <div class="login-dialog-textfield">
+                        <MudTextField Label="Email" @bind-Value="userInfo.Email" Variant="Variant.Outlined" FullWidth="true" Required="true" RequiredError="Email is required."
+                                      Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })" />
+                    </div>
+
+                    <div class="login-dialog-textfield">
+                        <MudTextField Label="Password" @bind-Value="userInfo.Password" Variant="Variant.Outlined" FullWidth="true" Required="true" RequiredError="Password is required."
+                                      InputType="@passwordInput" Adornment="Adornment.End" AdornmentIcon="@passwordInputIcon" OnAdornmentClick="ShowPassword" @ref="passwordField1"
+                                      Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" />
+                    </div>
+
+                    <div class="login-dialog-textfield">
+                        <MudTextField Label="Password again" @bind-Value="passwordAgain" Variant="Variant.Outlined" InputType="@passwordInput" Required="true"
+                                      Adornment="Adornment.End" AdornmentIcon="@passwordInputIcon" OnAdornmentClick="ShowPassword" FullWidth="true"
+                                      Validation="@(new Func<string, string>(PasswordMatch))" />
+                    </div>
+
+                </div>
+            </MudForm>
+
+        </DialogContent>
+        <DialogActions>
+            <div class="login-dialog-button">
+                <MudButton OnClick="Cancel" Variant="Variant.Filled">Cancel</MudButton>
+            </div>
+            <div class="login-dialog-button">
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!success)" @onclick="(() => Register())">Register</MudButton>
+            </div>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    private UserInfo userInfo = new UserInfo();
+
+    private bool isPasswordShown = false;
+    private bool success = false;
+    private string passwordAgain;
+
+    private MudTextField<string> passwordField1;
+    private InputType passwordInput = InputType.Password;
+    private string passwordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    void Cancel() => MudDialog.Cancel();
+
+    private async Task Register()
+    {
+        var userToken = await accountRepository.Register(userInfo);
+        await loginService.Login(userToken.Token);
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private IEnumerable<string> PasswordStrength(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            yield return "Password is required!";
+            yield break;
+        }
+
+        if (password.Length < 8)
+            yield return "Password must be at least of length 8";
+        if (!Regex.IsMatch(password, @"[A-Z]"))
+            yield return "Password must contain at least one capital letter";
+        if (!Regex.IsMatch(password, @"[a-z]"))
+            yield return "Password must contain at least one lowercase letter";
+        if (!Regex.IsMatch(password, @"[0-9]"))
+            yield return "Password must contain at least one digit";
+    }
+
+    private string PasswordMatch(string arg)
+    {
+        if (passwordField1.Value != arg)
+            return "Passwords do not match.";
+        Console.WriteLine("bruh");
+        return null;
+    }
+
+    private void ShowPassword()
+    {
+        @if (isPasswordShown)
+        {
+            isPasswordShown = false;
+            passwordInputIcon = Icons.Material.Filled.VisibilityOff;
+            passwordInput = InputType.Password;
+        }
+        else
+        {
+            isPasswordShown = true;
+            passwordInputIcon = Icons.Material.Filled.Visibility;
+            passwordInput = InputType.Text;
+        }
+    }
+}

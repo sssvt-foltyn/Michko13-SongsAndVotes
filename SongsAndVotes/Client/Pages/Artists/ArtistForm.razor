@@ -35,10 +35,12 @@
 
     private string imageURL;
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         if (!string.IsNullOrEmpty(Artist.Photo))
         {
+            Console.WriteLine(imageURL);
+            Console.WriteLine(Artist.Photo);
             imageURL = Artist.Photo;
             Artist.Photo = null;
         }
@@ -46,7 +48,12 @@
 
     private void PhotoSelected(string imageBase64)
     {
-        Artist.Photo = imageBase64;
-        imageURL = null;
+        if (!string.IsNullOrEmpty(imageBase64))
+        {
+            Console.WriteLine(imageBase64);
+            Console.WriteLine(imageURL);
+            Artist.Photo = imageBase64;
+            imageURL = null;
+        }
     }
 }

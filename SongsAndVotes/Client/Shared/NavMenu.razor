@@ -6,13 +6,19 @@
     <MudNavLink Href="/songs">Songs</MudNavLink>
     <MudNavLink Href="/albums">Albums</MudNavLink>
     <MudNavLink Href="/playlists">Playlists</MudNavLink>
-    <MudNavGroup Title="Create new"
-                 ExpandIcon="@Icons.Material.Filled.ExpandMore">
-        <MudNavLink Href="/song/create">Song</MudNavLink>
-        <MudNavLink Href="/artist/create">Artist</MudNavLink>
-        <MudNavLink Href="/album/create">Album</MudNavLink>
-        <MudNavLink Href="/playlist/create">Playlist</MudNavLink>
-    </MudNavGroup>
+
+    <AuthorizeView>
+        <Authorized>
+            <MudNavGroup Title="Create new"
+                         ExpandIcon="@Icons.Material.Filled.ExpandMore">
+                <MudNavLink Href="/song/create">Song</MudNavLink>
+                <MudNavLink Href="/artist/create">Artist</MudNavLink>
+                <MudNavLink Href="/album/create">Album</MudNavLink>
+                <MudNavLink Href="/playlist/create">Playlist</MudNavLink>
+            </MudNavGroup>
+        </Authorized>
+    </AuthorizeView>
+
 </MudNavMenu>
 
 

@@ -86,13 +86,13 @@ namespace SongsAndVotes.Server.Controllers
 			if (!string.IsNullOrWhiteSpace(song.Photo))
 			{
 				var songPhoto = Convert.FromBase64String(song.Photo);
-				song.Photo = await fileStorageService.SaveFile(songPhoto, "jpg", "songs");
+				song.Photo = await fileStorageService.SaveFile(songPhoto, ".jpg", "songs");
 			}
 
 			if (!string.IsNullOrWhiteSpace(song.AudioFile))
 			{
 				var songAudioFile = Convert.FromBase64String(song.AudioFile);
-				song.AudioFile = await fileStorageService.SaveFile(songAudioFile, "mp3", "songs");
+				song.AudioFile = await fileStorageService.SaveFile(songAudioFile, ".mp3", "songs");
 			}
 
 			context.Add(song);
@@ -108,15 +108,33 @@ namespace SongsAndVotes.Server.Controllers
 			if (!string.IsNullOrWhiteSpace(song.Photo))
 			{
 				var songPhoto = Convert.FromBase64String(song.Photo);
-				song.Photo = await fileStorageService.EditFile(songPhoto, "jpg", "songs", song.Photo);
+				song.Photo = await fileStorageService.EditFile(songPhoto, ".jpg", "songs", song.Photo);
 			}
 
 			if (!string.IsNullOrWhiteSpace(song.AudioFile))
 			{
 				var songAudioFile = Convert.FromBase64String(song.AudioFile);
-				song.AudioFile = await fileStorageService.EditFile(songAudioFile, "mp3", "songs", song.AudioFile);
+				song.AudioFile = await fileStorageService.EditFile(songAudioFile, ".mp3", "songs", song.AudioFile);
 			}
 
+			await context.SaveChangesAsync();
+			return NoContent();
+		}
+
+		[HttpDelete("{id}")]
+		public async Task<ActionResult> Delete(int id)
+		{
+			var song = await context.Songs.FirstOrDefaultAsync(x => x.ID == id);
+
+			if (song == null)
+			{
+				return NotFound();
+			}
+
+			await fileStorageService.DeleteFile(song.Photo, "songs");
+			await fileStorageService.DeleteFile(song.AudioFile, "songs");
+
+			context.Remove(song);
 			await context.SaveChangesAsync();
 			return NoContent();
 		}

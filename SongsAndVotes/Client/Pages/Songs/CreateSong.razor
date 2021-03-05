@@ -1,6 +1,7 @@
 ﻿@page "/song/create"
 @inject ISongRepository songRepository
 @inject NavigationManager navigationManager
+@attribute [Authorize]
 
 <MudText Typo="@Typo.h4" Style="margin-bottom: 15px;">Create song</MudText>
 

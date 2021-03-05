@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 <MudThemeProvider Theme="_currentTheme" />
-<MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.ExtraSmall" />
+<MudDialogProvider MaxWidth="MaxWidth.ExtraSmall" FullWidth="true"/>
 <MudSnackbarProvider />
 
 <MudLayout RightToLeft="@rightToLeft">
@@ -9,6 +9,7 @@
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
             <MudText Typo="Typo.h5" Class="mudblazor-appbar-brand-text">Songs And Votes</MudText>
         </MudHidden>
+        <LoginLinks/>
         <MudAppBarSpacer />
 
         <MudAppBarSpacer />
@@ -61,7 +62,8 @@
         {
             Palette = new Palette()
             {
-                Black = "#272c34"
+                Black = "#272c34",
+                Secondary = "#FFFFFF"
             }
         };
  

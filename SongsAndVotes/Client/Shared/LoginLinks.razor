@@ -1,0 +1,32 @@
+﻿@inject IDialogService DialogService
+
+<AuthorizeView>
+    <Authorized>
+
+        <div class="loginlinks-container">
+            <span>Hello, @context.User.Identity.Name!</span>
+            <MudButton Link="/logout" Variant="Variant.Filled" Color="Color.Default" StartIcon="@Icons.Material.Filled.Logout">Log out</MudButton>
+        </div>
+
+    </Authorized>
+    <NotAuthorized>
+
+        <div class="loginlinks-container">
+            <MudButton @onclick="(() => OnRegisterClick())" Variant="Variant.Text" Size="Size.Large" Color="Color.Secondary">Register</MudButton>
+            <MudButton @onclick="(() => OnLoginClick())" Variant="Variant.Text" Size="Size.Large" Color="Color.Secondary">Login</MudButton>
+        </div>
+
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private void OnLoginClick()
+    {
+        DialogService.Show<LoginDialog>("Login");
+    }
+
+    private void OnRegisterClick()
+    {
+        DialogService.Show<RegisterDialog>("Register");
+    }
+}

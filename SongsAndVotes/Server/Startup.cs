@@ -1,14 +1,19 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using SongsAndVotes.Server.Controllers.Helpers;
 using SongsAndVotes.Server.Helpers;
+using System;
 using System.Linq;
+using System.Text;
 
 namespace SongsAndVotes.Server
 {
@@ -29,6 +34,30 @@ namespace SongsAndVotes.Server
 			services.AddControllersWithViews();
 			services.AddRazorPages();
 
+			services.AddIdentity<IdentityUser, IdentityRole>(options =>
+					options.Password = new PasswordOptions
+					{
+						RequireDigit = true,
+						RequiredLength = 8,
+						RequireLowercase = true,
+						RequireUppercase = true,
+						RequireNonAlphanumeric = false
+					})
+				.AddEntityFrameworkStores<ApplicationDbContext>()
+				.AddDefaultTokenProviders();
+
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+			   .AddJwtBearer(options =>
+			   options.TokenValidationParameters = new TokenValidationParameters
+			   {
+				   ValidateIssuer = false,
+				   ValidateAudience = false,
+				   ValidateLifetime = true,
+				   ValidateIssuerSigningKey = true,
+				   IssuerSigningKey = new SymmetricSecurityKey(
+				   Encoding.UTF8.GetBytes(Configuration["jwt:key"])),
+				   ClockSkew = TimeSpan.Zero
+			   });
 			services.AddScoped<IFileStorageService, AzureStorageService>();
 		}
 
@@ -52,6 +81,8 @@ namespace SongsAndVotes.Server
 			app.UseStaticFiles();
 
 			app.UseRouting();
+			app.UseAuthentication();
+			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{

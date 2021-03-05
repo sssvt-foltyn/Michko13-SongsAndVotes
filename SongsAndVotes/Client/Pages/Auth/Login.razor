@@ -1,0 +1,10 @@
+﻿@page "/login"
+
+@inject IDialogService DialogService
+
+@code {
+    protected override void OnInitialized()
+    {
+        DialogService.Show<RegisterDialog>("Login");
+    }
+}

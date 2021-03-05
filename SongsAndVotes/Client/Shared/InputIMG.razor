@@ -47,6 +47,7 @@
         imageBase64 = Convert.ToBase64String(buffer);
         await OnSelectedImage.InvokeAsync(imageBase64);
         file = imageFiles[0];
+        Console.WriteLine(ImageURL);
         ImageURL = null;
         StateHasChanged();
     }
