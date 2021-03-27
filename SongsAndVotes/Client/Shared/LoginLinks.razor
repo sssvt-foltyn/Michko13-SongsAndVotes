@@ -20,13 +20,16 @@
 </AuthorizeView>
 
 @code {
+
+    DialogOptions maxWidth = new DialogOptions() {NoHeader = true };
+
     private void OnLoginClick()
     {
-        DialogService.Show<LoginDialog>("Login");
+        DialogService.Show<LoginDialog>("", maxWidth);
     }
 
     private void OnRegisterClick()
     {
-        DialogService.Show<RegisterDialog>("Register");
+        DialogService.Show<RegisterDialog>("", maxWidth);
     }
 }

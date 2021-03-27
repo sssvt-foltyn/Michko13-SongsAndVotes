@@ -1,51 +1,82 @@
 ﻿@inject IArtistRepository artistRepository
 
-<EditForm Model="Song" OnValidSubmit="OnDataAnnotationsValidated">
-    <DataAnnotationsValidator />
-    <div class="form-group">
-        <label>Title:</label>
-        <div>
-            <InputText class="form-control input-text-form" @bind-Value="@Song.Title" />
-            <ValidationMessage For="@(()=> Song.Title)" />
+<div class="song-dialog-container">
+
+    <MudForm @bind-IsValid="@titleCheck">
+        <div class="form-group" style="margin-bottom: 8px">
+            <MudTextField @bind-Value="Song.Title" Required="true" RequiredError="Title is required."></MudTextField>
         </div>
-    </div>
+    </MudForm>
 
-    <div class="form-group">
+    <div class="form-group" style="margin-bottom: 8px">
         <InputIMG Label="Picture:" OnSelectedImage="PhotoSelected" ImageURL="@imageURL" />
+        @if (photoCheck)
+        {
+            <div class="error-text">Photo is required.</div>
+        }
     </div>
 
-    <div class="form-group">
-        <InputAudioFile Label="Audio:" OnSelectedAudioFile="AudioFileSelected" AudioURL="@audioURL"/>
+    <div class="form-group" style="margin-bottom: 8px">
+        <InputAudioFile Label="Audio:" OnSelectedAudioFile="AudioFileSelected" AudioURL="@audioURL" />
+        @if (audioCheck)
+        {
+            <div class="error-text">Audio file is required.</div>
+        }
     </div>
 
     <div class="form-group">
         <label>Artists:</label>
-        <div>
-            <MultipleSelectorTypeahead Context="artist" SearchMethod="SearchMethod" SelectedElements="SelectedArtists" OnlyOneSelect="true">
-                <MyResultTemplate>
-                    <img style="width: 50px; height: 50px;" src="@artist.Photo" />
-                    @artist.Name
-                </MyResultTemplate>
-                <MyListTemplate>
-                    <img style="width: 50px; height: 50px;" src="@artist.Photo" />  @artist.Name
-                </MyListTemplate>
-            </MultipleSelectorTypeahead>
+        <MultipleSelectorTypeahead Context="artist" SearchMethod="SearchMethod" SelectedElements="SelectedArtists"
+                                   OnlyOneSelect="true" OnItemSelect="ArtistCheckChange">
+            <MyResultTemplate>
+                <img style="width: 50px; height: 50px;" src="@artist.Photo" />
+                @artist.Name
+            </MyResultTemplate>
+            <MyListTemplate>
+                <img style="width: 50px; height: 50px;" src="@artist.Photo" />  @artist.Name
+            </MyListTemplate>
+        </MultipleSelectorTypeahead>
+        @if(artistCheck)
+        {
+            <div class="error-text">Please select an artist.</div>
+        }
+    </div>
+    <div class="song-form-button-container">
+
+        <div class="song-form-button">
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save"
+                       IconColor="Color.Primary" Size="Size.Large" OnClick="CheckRequirements">Save changes</MudButton>
         </div>
+        <div class="song-form-button">
+            <MudButton OnClick="OnCancel" Variant="Variant.Filled" Size="Size.Large">Cancel</MudButton>
+        </div>
+
     </div>
 
-    <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" StartIcon="@Icons.Material.Filled.Save" IconColor="Color.Primary" Size="Size.Large" >Save changes</MudButton>
-</EditForm>
-
+</div>
 
 
 @code {
     [Parameter] public Song Song { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
     [Parameter] public List<Artist> SelectedArtists { get; set; } = new List<Artist>();
     [Parameter] public List<Artist> NotSelectedArtists { get; set; } = new List<Artist>();
 
     private string imageURL;
     private string audioURL;
+
+    private bool titleCheck = false;
+    private bool photoCheck = false;
+    private bool audioCheck = false;
+    private bool artistCheck = false;
+
+    private void ArtistCheckChange()
+    {
+        Console.WriteLine("item selected");
+        artistCheck = false;
+    }
+
 
     protected override void OnInitialized()
     {
@@ -56,23 +87,50 @@
         }
     }
 
-    private async Task OnDataAnnotationsValidated()
+    private void CheckRequirements()
     {
-        Song.Artist = SelectedArtists[0];
+        if (Song.Title != string.Empty && Song.Photo != null && Song.AudioFile != null && SelectedArtists.Count == 1)
+        {
+            Song.Artist = SelectedArtists[0];
+            OnValidSubmit.InvokeAsync(null);
+        }
+        else
+        {
+            if (Song.Title != string.Empty)
+                titleCheck = true;
+            else
+                titleCheck = false;
 
-        await OnValidSubmit.InvokeAsync(null);
+            if (Song.Photo == null)
+                photoCheck = true;
+            else
+                photoCheck = false;
+
+            if (Song.AudioFile == null)
+                audioCheck = true;
+            else
+                audioCheck = false;
+
+            if (SelectedArtists.Count == 0)
+                artistCheck = true;
+            else
+                artistCheck = false;
+
+        }
     }
 
     private void PhotoSelected(string imageBase64)
     {
         Song.Photo = imageBase64;
         imageURL = null;
+        photoCheck = false;
     }
 
     private void AudioFileSelected(string audioBase64)
     {
         Song.AudioFile = audioBase64;
         audioURL = null;
+        audioCheck = false;
     }
 
     private async Task<IEnumerable<Artist>> SearchMethod(string searchText)

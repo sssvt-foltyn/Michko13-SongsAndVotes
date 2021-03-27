@@ -4,11 +4,32 @@
     text-align: center;
 }
 
+.dialog-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.artist-dialog-container, .song-dialog-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 550px;
+}
+
+.artistform-buttons MudButton {
+    text-align: right;
+}
+
 .song-photo, .playlist-photo, .album-photo {
-    width: 325px;
-    height: 200px;
-    margin: 5px;
-    border: 4px solid #594AE2;
+    width: 291px;
+    height: 165px;
+    margin-bottom: 5px;
+    border: 1px solid #000000;
+}
+
+.artist-photo-on-song {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
 }
 
 .individual-song-container p, .individual-playlist-container, .individual-album-container {
@@ -17,7 +38,6 @@
     max-width: 367px;
     height: 44px;
     font-size: 18px;
-    font-weight: bold;
     text-align: left;
 }
 
@@ -27,12 +47,11 @@
     align-items: center;
 }
 
-
 .artist-photo {
     width: 175px;
     height: 175px;
     margin: 5px;
-    border: 4px solid #594AE2;
+
 }
 
 .form-bio {
@@ -46,7 +65,7 @@
 }
 
 .blazored-typeahead {
-    width: 600px;
+    width: 550px;
 }
 
 .blazored-typeahead__controls {
@@ -72,7 +91,7 @@
 
 .blazored-typeahead__input-mask-wrapper {
     display: flex;
-    width: 600px;
+    width: 550px;
 }
 
 .blazored-typeahead__input-mask {
@@ -120,6 +139,7 @@
     min-height: 2rem;
     max-height: 30rem;
     overflow-y: auto;
+    max-width: 550px;
 }
 
 .blazored-typeahead__result,
@@ -174,12 +194,31 @@
     margin: 0 auto;
 }
 
-.form-group label{
+.form-group label {
     font-size: 17px;
 }
 
-.input-text-form{
-    width: 600px;
+.input-text-form {
+    width: 550px;
+}
+
+.error-text {
+    color: red;
+    margin-top: 5px;
+}
+
+artist-form-dialog-textfield {
+
+}
+
+.artist-form-button-container {
+
+}
+
+.artist-form-button, .song-form-button {
+    margin-bottom: 15px;
+    margin-left: 18px;
+    float: right;
 }
 
 .login-dialog-textfield {
@@ -187,7 +226,6 @@
 }
 
 .login-dialog-container {
-
 }
 
 .login-dialog-button {
@@ -201,7 +239,7 @@
 }
 
 .loginlinks-container {
-    margin-left: 25px;
+    margin-left: 2px;
 }
 
 .edit-delete-button-container {

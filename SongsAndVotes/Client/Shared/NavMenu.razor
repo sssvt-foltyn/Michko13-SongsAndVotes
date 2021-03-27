@@ -1,4 +1,5 @@
-﻿
+﻿@inject IDialogService DialogService
+
 <MudNavMenu Class="mudblazor-navmenu">
     <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
     <MudNavLink Href="/search">Search</MudNavLink>
@@ -11,10 +12,10 @@
         <Authorized>
             <MudNavGroup Title="Create new"
                          ExpandIcon="@Icons.Material.Filled.ExpandMore">
-                <MudNavLink Href="/song/create">Song</MudNavLink>
-                <MudNavLink Href="/artist/create">Artist</MudNavLink>
-                <MudNavLink Href="/album/create">Album</MudNavLink>
-                <MudNavLink Href="/playlist/create">Playlist</MudNavLink>
+                <MudNavLink @onclick="SongCreate" >Song</MudNavLink>
+                <MudNavLink @onclick="ArtistCreate" >Artist</MudNavLink>
+                <MudNavLink @onclick="AlbumCreate" >Album</MudNavLink>
+                <MudNavLink @onclick="PlaylistCreate" >Playlist</MudNavLink>
             </MudNavGroup>
         </Authorized>
     </AuthorizeView>
@@ -27,6 +28,13 @@
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, NoHeader = true };
+
+    private void SongCreate() => DialogService.Show<CreateSongDialog>("", maxWidth);
+    private void ArtistCreate() => DialogService.Show<CreateArtistDialog>("", maxWidth);
+    private void AlbumCreate() => DialogService.Show<CreateAlbumDialog>("", maxWidth);
+    private void PlaylistCreate() => DialogService.Show<CreatePlaylistDialog>("", maxWidth);
 
     private void ToggleNavMenu()
     {

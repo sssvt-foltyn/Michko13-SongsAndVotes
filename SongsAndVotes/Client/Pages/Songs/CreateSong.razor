@@ -1,19 +1,11 @@
 ﻿@page "/song/create"
-@inject ISongRepository songRepository
-@inject NavigationManager navigationManager
-@attribute [Authorize]
-
-<MudText Typo="@Typo.h4" Style="margin-bottom: 15px;">Create song</MudText>
-
-<SongForm Song="song" OnValidSubmit="SaveSong" />
+@inject IDialogService dialogService 
 
 @code {
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, NoHeader = true };
 
-    private Song song = new Song();
-
-    private async Task SaveSong()
+    protected override void OnInitialized()
     {
-        await songRepository.CreateSong(song);
-        navigationManager.NavigateTo("songs");
+        dialogService.Show<CreateSongDialog>("", maxWidth);
     }
 }

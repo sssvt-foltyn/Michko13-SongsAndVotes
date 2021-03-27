@@ -1,19 +1,12 @@
 ﻿@page "/artist/create"
-@inject IArtistRepository artistRepository
-@inject NavigationManager navigationManager
-@attribute [Authorize]
-
-<MudText Typo="@Typo.h4" Style="margin-bottom: 15px;">Create artist</MudText>
-
-<ArtistForm Artist="artist" OnValidSubmit="Create" />
+@inject IDialogService dialogService
 
 @code {
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = true, NoHeader = true};
 
-    private Artist artist = new Artist();
-
-    private async Task Create()
+    protected override void OnInitialized()
     {
-        await artistRepository.CreateArtist(artist);
-        navigationManager.NavigateTo("artists");
+        dialogService.Show<CreateArtistDialog>("", maxWidth);
     }
 }
+

@@ -3,45 +3,42 @@
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 
-<EditForm Model="userInfo" OnValidSubmit="Register">
-    <DataAnnotationsValidator />
-    <MudDialog>
-        <DialogContent>
+<MudDialog>
+    <DialogContent>
+        <MudText Align="Align.Center" Typo="Typo.h5" Style="margin-top: 10px; margin-bottom: 15px">Register</MudText>
+        <MudForm @bind-IsValid="@success">
+            <div class="login-dialog-container">
 
-            <MudForm @bind-IsValid="@success">
-                <div class="login-dialog-container">
-
-                    <div class="login-dialog-textfield">
-                        <MudTextField Label="Email" @bind-Value="userInfo.Email" Variant="Variant.Outlined" FullWidth="true" Required="true" RequiredError="Email is required."
-                                      Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })" />
-                    </div>
-
-                    <div class="login-dialog-textfield">
-                        <MudTextField Label="Password" @bind-Value="userInfo.Password" Variant="Variant.Outlined" FullWidth="true" Required="true" RequiredError="Password is required."
-                                      InputType="@passwordInput" Adornment="Adornment.End" AdornmentIcon="@passwordInputIcon" OnAdornmentClick="ShowPassword" @ref="passwordField1"
-                                      Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" />
-                    </div>
-
-                    <div class="login-dialog-textfield">
-                        <MudTextField Label="Password again" @bind-Value="passwordAgain" Variant="Variant.Outlined" InputType="@passwordInput" Required="true"
-                                      Adornment="Adornment.End" AdornmentIcon="@passwordInputIcon" OnAdornmentClick="ShowPassword" FullWidth="true"
-                                      Validation="@(new Func<string, string>(PasswordMatch))" />
-                    </div>
-
+                <div class="login-dialog-textfield">
+                    <MudTextField Label="Email" @bind-Value="userInfo.Email" Variant="Variant.Outlined" FullWidth="true" Required="true" RequiredError="Email is required."
+                                  Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })" />
                 </div>
-            </MudForm>
 
-        </DialogContent>
-        <DialogActions>
-            <div class="login-dialog-button">
-                <MudButton OnClick="Cancel" Variant="Variant.Filled">Cancel</MudButton>
+                <div class="login-dialog-textfield">
+                    <MudTextField Label="Password" @bind-Value="userInfo.Password" Variant="Variant.Outlined" FullWidth="true" Required="true" RequiredError="Password is required."
+                                  InputType="@passwordInput" Adornment="Adornment.End" AdornmentIcon="@passwordInputIcon" OnAdornmentClick="ShowPassword" @ref="passwordField1"
+                                  Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" />
+                </div>
+
+                <div class="login-dialog-textfield">
+                    <MudTextField Label="Password again" @bind-Value="passwordAgain" Variant="Variant.Outlined" InputType="@passwordInput" Required="true"
+                                  Adornment="Adornment.End" AdornmentIcon="@passwordInputIcon" OnAdornmentClick="ShowPassword" FullWidth="true"
+                                  Validation="@(new Func<string, string>(PasswordMatch))" />
+                </div>
+
             </div>
-            <div class="login-dialog-button">
-                <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!success)" @onclick="(() => Register())">Register</MudButton>
-            </div>
-        </DialogActions>
-    </MudDialog>
-</EditForm>
+        </MudForm>
+    </DialogContent>
+
+    <DialogActions>
+        <div class="login-dialog-button">
+            <MudButton OnClick="Cancel" Variant="Variant.Filled">Cancel</MudButton>
+        </div>
+        <div class="login-dialog-button">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!success)" @onclick="(() => Register())">Register</MudButton>
+        </div>
+    </DialogActions>
+</MudDialog>
 
 
 @code {

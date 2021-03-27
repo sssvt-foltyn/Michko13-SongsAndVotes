@@ -1,47 +1,36 @@
 ﻿@inject ISongRepository songRepository
 
-<div class="individual-song-container">
+    <div class="individual-song-container">
 
-    <MudCard>
+        <a href="@songURL">
+            <img src="@Song.Photo" alt="Photo" class="song-photo" />
+        </a>
 
-        <MudCardContent>
-            <a href="@songURL">
-                <img src="@Song.Photo" alt="Photo" class="song-photo" />
-            </a>
+        <MudText Typo="Typo.h5" Align="Align.Left">
+            <a href="@songURL" style="font-weight: bold">@Song.Title</a>
+        </MudText>
+        <MudText Typo="Typo.body1" Align="Align.Left">
+            <div style="font-weight: bold">
+                <a href="artist/@Song.Artist.ID/@Song.Artist.Name.Replace(" ", "-")" >@Song.Artist.Name</a>
+                <br />Rating: <MudRating SelectedValue="5" ReadOnly="true" />
+            </div>
+        </MudText>
 
-            <MudText Typo="Typo.h5" Align="Align.Center">
-                <a href="@songURL" style="color: #594AE2; font-weight: bold">@Song.Title</a>
-            </MudText>
-            <MudText Typo="Typo.body1" Align="Align.Left">
-                by <a href="artist/@Song.Artist.ID/@Song.Artist.Name.Replace(" ", "-")" style="color: #594AE2; font-weight: bold">@Song.Artist.Name</a>
-                <br />Uploaded by: <a href="user/diahexik" style="color: #594AE2; font-weight: bold">Diahexik</a>
-                <br />Rating:
-
-            </MudText>
-            <br />
-            <AuthorizeView>
-                <Authorized>
-                    <br />
-                    <div class="edit-delete-button-container">
-                        <div class="edit-delete-button">
-                            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Link="@songEditURL" Color="Color.Primary">Edit</MudButton>
-                        </div>
-                        <div class="edit-delete-button">
-                            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" @onclick="@(() => DeleteSong(Song.ID))" Link="/artists" Color="Color.Error">Delete</MudButton>
-                        </div>
+        <AuthorizeView>
+            <Authorized>
+                <br />
+                <div class="edit-delete-button-container">
+                    <div class="edit-delete-button">
+                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Link="@songEditURL" Color="Color.Primary">Edit</MudButton>
                     </div>
+                    <div class="edit-delete-button">
+                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" @onclick="@(() => DeleteSong(Song.ID))" Link="/artists" Color="Color.Error">Delete</MudButton>
+                    </div>
+                </div>
+            </Authorized>
+        </AuthorizeView>
 
-                </Authorized>
-            </AuthorizeView>
-        </MudCardContent>
-
-        <MudCardActions>
-
-        </MudCardActions>
-    </MudCard>
-
-
-</div>
+    </div>
 
 
 @code {

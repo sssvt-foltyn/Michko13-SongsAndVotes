@@ -1,48 +1,71 @@
-﻿<EditForm Model="Artist" OnValidSubmit="OnValidSubmit">
-    <DataAnnotationsValidator />
-    <div class="form-group">
-        <label>Name:</label>
-        <div>
-            <InputText class="form-control input-text-form" @bind-Value="@Artist.Name" />
-            <ValidationMessage For="@(() => Artist.Name)" />
+﻿<MudForm @bind-IsValid="@success">
+    <div class="artist-dialog-container">
+
+        <div class="form-group">
+            <MudTextField Label="Name" Class="input-text-form" @bind-Value="@Artist.Name" Required="true" RequiredError="Name is required."></MudTextField>
         </div>
-    </div>
 
 
-    <div class="form-group">
-        <InputIMG Label="Picture: " OnSelectedImage="PhotoSelected" ImageURL="@imageURL" />
-    </div>
+        <div class="form-group">
+            <InputIMG Label="Picture: " OnSelectedImage="PhotoSelected" ImageURL="@imageURL" />
+            @if (photoCheck)
+            {
+                <div class="error-text">Photo is required.</div>
+            }
+        </div>
 
-    <div class="form-group">
-        <div>
+        <div class="form-group">
             <MudDatePicker Label="Date of birth" @bind-Date="@Artist.DateOfBirth" />
-            <ValidationMessage For="@(()=> Artist.DateOfBirth)" />
+        </div>
+
+        <div class="form-group">
+            <MudTextField Class="input-text-form" T="string" Label="Biography" Variant="Variant.Text" Lines="5" @bind-Value="@Artist.Biography" />
+        </div>
+
+        <div class="artist-form-button-container">
+
+            <div class="artist-form-button">
+                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save"
+                           IconColor="Color.Primary" Size="Size.Large" OnClick="CheckRuquirements">Save changes</MudButton>
+            </div>
+            <div class="artist-form-button">
+                <MudButton OnClick="OnCancel" Variant="Variant.Filled" Size="Size.Large">Cancel</MudButton>
+            </div>
+
         </div>
     </div>
 
-    <div class="form-group form-bio">
-        <div>
-            <MudTextField Class="input-text-form" T="string" Label="Biography" Variant="Variant.Text" Lines="5" @bind-Value="@Artist.Biography" />
-            <ValidationMessage For="@(() => Artist.Biography)" />
-        </div>
-    </div>
-    <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" StartIcon="@Icons.Material.Filled.Save" IconColor="Color.Primary" Size="Size.Large">Save changes</MudButton>
-</EditForm>
+</MudForm>
+
 
 @code {
     [Parameter] public Artist Artist { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
 
     private string imageURL;
+    private bool success = false;
+    private bool photoCheck = false;
 
     protected override void OnParametersSet()
     {
         if (!string.IsNullOrEmpty(Artist.Photo))
         {
-            Console.WriteLine(imageURL);
-            Console.WriteLine(Artist.Photo);
             imageURL = Artist.Photo;
             Artist.Photo = null;
+        }
+    }
+
+    private void CheckRuquirements()
+    {
+        if (success && Artist.Photo != null)
+        {
+            OnValidSubmit.InvokeAsync(null);
+        }
+
+        if(Artist.Photo == null)
+        {
+            photoCheck = true;
         }
     }
 
@@ -50,10 +73,9 @@
     {
         if (!string.IsNullOrEmpty(imageBase64))
         {
-            Console.WriteLine(imageBase64);
-            Console.WriteLine(imageURL);
             Artist.Photo = imageBase64;
             imageURL = null;
+            photoCheck = false;
         }
     }
 }

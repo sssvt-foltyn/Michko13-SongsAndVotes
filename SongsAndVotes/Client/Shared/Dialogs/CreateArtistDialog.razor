@@ -1,0 +1,26 @@
+﻿@inject IArtistRepository artistRepository
+@inject NavigationManager navigationManager
+@attribute [Authorize]
+
+<MudDialog>
+    <DialogContent>
+        <div class="dialog-container">
+            <MudText Align="Align.Center" Typo="Typo.h5">Create an artist</MudText>
+            <ArtistForm Artist="artist" OnValidSubmit="Create" OnCancel="@(() => MudDialog.Close())" />
+        </div>
+    </DialogContent>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    private Artist artist = new Artist();
+
+    void Cancel() => MudDialog.Cancel();
+
+    private async Task Create()
+    {
+        await artistRepository.CreateArtist(artist);
+        navigationManager.NavigateTo("artists");
+    }
+}

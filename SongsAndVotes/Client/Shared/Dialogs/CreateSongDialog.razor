@@ -1,0 +1,28 @@
+﻿@inject ISongRepository songRepository
+@inject NavigationManager navigationManager
+@attribute [Authorize]
+
+<MudDialog>
+    <DialogContent>
+        <div class="dialog-container">
+            <MudText Align="Align.Center" Typo="Typo.h5">Create a song</MudText>
+            <SongForm Song="song" OnValidSubmit="SaveSong" OnCancel="@(() => MudDialog.Close())"/>
+        </div>
+    </DialogContent>
+</MudDialog>
+
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    private Song song = new Song();
+
+    void Cancel() => MudDialog.Cancel();
+
+    private async Task SaveSong()
+    {
+        await songRepository.CreateSong(song);
+        MudDialog.Cancel();
+        navigationManager.NavigateTo("songs");
+    }
+}

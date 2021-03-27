@@ -5,11 +5,12 @@
 <MudSnackbarProvider />
 
 <MudLayout RightToLeft="@rightToLeft">
-    <MudAppBar Elevation="25">
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="DrawerToggle" Variant="@DrawerVariant.Persistent" />
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
             <MudText Typo="Typo.h5" Class="mudblazor-appbar-brand-text">Songs And Votes</MudText>
         </MudHidden>
-        <LoginLinks/>
+        <LoginLinks />
         <MudAppBarSpacer />
 
         <MudAppBarSpacer />
@@ -22,10 +23,11 @@
 
     <MudDrawer @bind-Open=_drawerOpen Elevation="25" Class="mudblazor-appbar-band">
         <MudDrawerHeader Class="mudblazor-brand" LinkToIndex="true">
-            <img src="logo.png" class="logo"/>
+            <img src="logo.png" class="logo" />
         </MudDrawerHeader>
         <NavMenu />
     </MudDrawer>
+
     <MudMainContent Class="mudblazor-main-content">
         <MudContainer MaxWidth="MaxWidth.ExtraLarge" Style="margin-top: 20px;">
             @Body
@@ -40,7 +42,6 @@
 
 @code
 {
-
     private bool _drawerOpen = true;
     private bool rightToLeft = false;
     private string searchValue = string.Empty;

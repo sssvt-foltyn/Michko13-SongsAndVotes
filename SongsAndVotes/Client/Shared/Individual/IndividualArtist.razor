@@ -2,34 +2,25 @@
 
 <div class="individual-artist-container">
 
-    <MudCard>
+    <a href="@artistURL">
+        <img src="@Artist.Photo" alt="Photo" class="artist-photo" />
+    </a>
+    <MudText Typo="Typo.h6"><a href="@artistURL">@Artist.Name</a></MudText>
 
-        <MudCardContent>
-            <a href="@artistURL">
-                <img src="@Artist.Photo" alt="Photo" class="artist-photo" />
-            </a>
-            <MudText Typo="Typo.h6"><a href="@artistURL">@Artist.Name</a></MudText>
+    <AuthorizeView>
+        <Authorized>
+            <div class="edit-delete-button-container">
+                <div class="edit-delete-button">
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Link="@artistEditURL" Color="Color.Primary">Edit</MudButton>
+                </div>
 
-            <AuthorizeView>
-                <Authorized>
-                    <div class="edit-delete-button-container">
-                        <div class="edit-delete-button">
-                            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" Link="@artistEditURL" Color="Color.Primary">Edit</MudButton>
-                        </div>
+                <div class="edit-delete-button">
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" @onclick="@(() => DeleteArtist(Artist.ID))" Link="/artists" Color="Color.Error">Delete</MudButton>
+                </div>
+            </div>
 
-                        <div class="edit-delete-button">
-                            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" @onclick="@(() => DeleteArtist(Artist.ID))" Link="/artists" Color="Color.Error">Delete</MudButton>
-                        </div>
-                    </div>
-
-                </Authorized>
-            </AuthorizeView>
-
-        </MudCardContent>
-
-    </MudCard>
-
-
+        </Authorized>
+    </AuthorizeView>
 
 </div>
 

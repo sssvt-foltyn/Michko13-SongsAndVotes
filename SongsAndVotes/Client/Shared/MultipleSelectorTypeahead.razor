@@ -7,7 +7,7 @@
     </ResultTemplate>
 </CustomTypeahead>
 
-<ul class="list-group" style="width: 600px">
+<ul class="list-group" style="width: 550px">
     @foreach (var item in SelectedElements)
     {
         <li draggable="true"
@@ -27,11 +27,14 @@
     [Parameter] public Func<string, Task<IEnumerable<T>>> SearchMethod { get; set; }
     [Parameter] public RenderFragment<T> MyResultTemplate { get; set; }
     [Parameter] public RenderFragment<T> MyListTemplate { get; set; }
+    [Parameter] public EventCallback OnItemSelect { get; set; }
     T draggedItem;
     [Parameter] public bool OnlyOneSelect { get; set; }
 
     private void SelectedElement(T item)
     {
+        OnItemSelect.InvokeAsync(false);
+
         if (!OnlyOneSelect)
         {
             if (!SelectedElements.Any(x => x.Equals(item)))

@@ -3,41 +3,39 @@
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 
-<EditForm Model="userInfo" OnValidSubmit="Login">
-    <DataAnnotationsValidator />
-    <MudDialog>
-        <DialogContent>
 
-            <MudForm @bind-IsValid="@success">
 
-                <div class="login-dialog-container">
+<MudDialog>
+    <DialogContent>
+        <MudText Align="Align.Center" Typo="Typo.h5" Style="margin-top: 10px; margin-bottom: 15px">Login</MudText>
+        <MudForm @bind-IsValid="@success">
 
-                    <div class="login-dialog-textfield">
-                        <MudTextField Label="Email" @bind-Value="userInfo.Email" Variant="Variant.Outlined" FullWidth="true" Required="true" RequiredError="Email is required."
-                                      Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })" />
-                    </div>
+            <div class="login-dialog-container">
 
-                    <div class="login-dialog-textfield">
-                        <MudTextField Label="Password" @bind-Value="userInfo.Password" Variant="Variant.Outlined" FullWidth="true" Required="true" RequiredError="Password is required."
-                                      InputType="@passwordInput" Adornment="Adornment.End" AdornmentIcon="@passwordInputIcon" OnAdornmentClick="ShowPassword"/>
-                    </div>
-
+                <div class="login-dialog-textfield">
+                    <MudTextField Label="Email" @bind-Value="userInfo.Email" Variant="Variant.Outlined" FullWidth="true" Required="true" RequiredError="Email is required."
+                                  Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })" />
                 </div>
-            </MudForm>
-        </DialogContent>
-        <DialogActions>
 
-            <div class="login-dialog-button">
-                <MudButton OnClick="Cancel" Variant="Variant.Filled">Cancel</MudButton>
+                <div class="login-dialog-textfield">
+                    <MudTextField Label="Password" @bind-Value="userInfo.Password" Variant="Variant.Outlined" FullWidth="true" Required="true" RequiredError="Password is required."
+                                  InputType="@passwordInput" Adornment="Adornment.End" AdornmentIcon="@passwordInputIcon" OnAdornmentClick="ShowPassword" />
+                </div>
+
             </div>
-            <div class="login-dialog-button">
-                <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!success)" @onclick="(() => Login())">Login</MudButton>
-            </div>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
 
-        </DialogActions>
-    </MudDialog>
-</EditForm>
+        <div class="login-dialog-button">
+            <MudButton OnClick="Cancel" Variant="Variant.Filled">Cancel</MudButton>
+        </div>
+        <div class="login-dialog-button">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!success)" @onclick="(() => Login())">Login</MudButton>
+        </div>
 
+    </DialogActions>
+</MudDialog>
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
