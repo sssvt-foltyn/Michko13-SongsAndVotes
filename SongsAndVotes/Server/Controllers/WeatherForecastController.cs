@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace SongsAndVotes.Server.Controllers
 {
@@ -33,6 +34,13 @@ namespace SongsAndVotes.Server.Controllers
 				Date = DateTime.Now.AddDays(index),
 				TemperatureC = rng.Next(-20, 55),
 				Summary = Summaries[rng.Next(Summaries.Length)]
+			})
+			//.Select((wfc, i) => wfc)
+			.Select((wfc, i) =>
+			{
+				//Thread.Sleep(1000);
+				Thread.Sleep(200);
+				return wfc;
 			})
 			.ToArray();
 		}
