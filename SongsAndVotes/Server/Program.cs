@@ -21,7 +21,8 @@ namespace SongsAndVotes.Server
 				.ConfigureWebHostDefaults(webBuilder =>
 				{
 					//webBuilder.UseStartup<Startup>();
-					webBuilder.UseStartup<IntegratedMiddlewareStartup>();
+					//webBuilder.UseStartup<IntegratedMiddlewareStartup>();
+					webBuilder.UseStartup<TerminalMiddlewareStartup>();
 				});
 	}
 }
