@@ -31,8 +31,12 @@ namespace SongsAndVotes.Server
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
+            string action = httpContext.Request.Query["a"];
+            string controller = httpContext.Request.Query["c"];
+
             //var url = _linkGenerator.GetPathByAction("ListProducts", "Store");
-            var url = _linkGenerator.GetPathByAction("Get", "WeatherForecast");
+            //var url = _linkGenerator.GetPathByAction("Get", "WeatherForecast");
+            var url = _linkGenerator.GetPathByAction(action, controller);
             string linkGeneratorType = _linkGenerator?.GetType().FullName ?? "(null)";
             string urlType = url?.GetType().FullName ?? "(null)";
 

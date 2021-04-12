@@ -28,6 +28,10 @@ namespace SongsAndVotes.Server.Controllers
 		[HttpGet]
 		public IEnumerable<WeatherForecast> Get()
 		{
+			string routeInfo = ControllerContext.ToCtxString();
+			_logger.LogInformation(routeInfo);
+			Console.WriteLine(routeInfo);
+
 			var rng = new Random();
 			return Enumerable.Range(1, 5).Select(index => new WeatherForecast
 			{
