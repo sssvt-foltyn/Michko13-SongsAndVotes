@@ -35,25 +35,52 @@ namespace SongsAndVotes.Server.Controllers
 
         //[HttpGet]
         //[Route("list")]
-        [HttpGet("list")]
-        public IEnumerable<Invoice> GetList()
+        //[HttpGet("list")]
+        //public IEnumerable<Invoice> GetList()
+        // REST API recommends a path like /invoice without any additional text (no verbs for example) such as /invoice/list
+        // REST API path: GET /invoice
+        [HttpGet]
+        public async Task<IActionResult> GetList()
         {
             _logger.LogInformation(this.ControllerContext.ToCtxString());
 
-            return MockInvoices();
+            await Task.Delay(1000);
+
+            //return MockInvoices();
+            IEnumerable<Invoice> invoices = MockInvoices();
+            // HTTP status code: 200 (OK)
+            return Ok(invoices);
         }
 
 
 
         //[HttpGet]
         //[Route("{id}")]
+        //[HttpGet("{id}")]
+        //public Invoice Load(int id)
+        // REST API path: GET /invoice/1
         [HttpGet("{id}")]
-        public Invoice Load(int id)
+        public async Task<IActionResult> Load(int id)
         {
             _logger.LogInformation(this.ControllerContext.ToCtxString());
 
+            await Task.Delay(700);
+
             //return MockInvoices().First();
-            return MockInvoices().Where(i => i.ID == id).First();
+            //return MockInvoices().Where(i => i.ID == id).First();
+            Invoice invoice = null;
+            try
+            {
+                invoice = MockInvoices().Where(i => i.ID == id).First();
+            }
+            catch (InvalidOperationException ex)
+            {
+                // No such invoice (non-existing ID).
+                // HTTP status code: 404 (Not Found)
+                return NotFound();
+            }
+            // HTTP status code: 200 (OK)
+            return Ok(invoice);
         }
 
 
@@ -61,7 +88,11 @@ namespace SongsAndVotes.Server.Controllers
         //public async Task<IActionResult> Add(Invoice invoice)
         //[HttpPost]
         //[Route("0")]
-        [HttpPost("0")]
+        //[HttpPost("0")]
+        // REST API recommends paths with no ID specification.
+        // Data (properties of a new invoice) is taken from the HTML form.
+        // REST API path: POST /invoice
+        [HttpPost]
         public async Task<IActionResult> Add([FromForm] Invoice invoice)
         {
             _logger.LogInformation(this.ControllerContext.ToCtxString());
@@ -71,6 +102,8 @@ namespace SongsAndVotes.Server.Controllers
 
             invoice.ID = 100;
 
+            // HTTP status code: 201 (Created)
+            // HTTP 'Location' header: /invoice/{id} containing the new ID, e.g. /invoice/100
             return CreatedAtAction(nameof(Load), new { id = invoice.ID }, invoice);
         }
 
@@ -78,30 +111,58 @@ namespace SongsAndVotes.Server.Controllers
 
         //[HttpPut]
         //[Route("{id}")]
+        // REST API path: PUT /invoice/1
         [HttpPut("{id}")]
         public async Task<IActionResult> Store(int id, [FromForm] Invoice invoice)
         {
             _logger.LogInformation(this.ControllerContext.ToCtxString());
             _logger.LogInformation(invoice.ToString());
 
-            if ( (invoice.ID != 0) && (id != invoice.ID) )
-            {
-                throw new InvalidOperationException($"URI id ({id}) does not correpond to invoice ID ({invoice.ID}).");
-            }
-            if (invoice.ID == 0)
-            {
-                invoice.ID = id;
-            }
+            //if ( (invoice.ID != 0) && (id != invoice.ID) )
+            //{
+            //    throw new InvalidOperationException($"URI id ({id}) does not correpond to invoice ID ({invoice.ID}).");
+            //}
+            //if (invoice.ID == 0)
+            //{
+            //    invoice.ID = id;
+            //}
 
             await Task.Delay(300);
 
-            return Ok(invoice);
+            //if ((invoice.ID != 0) && (id != invoice.ID))
+            //{
+            //    throw new InvalidOperationException($"URI id ({id}) does not correpond to invoice ID ({invoice.ID}).");
+            //}
+            //if (invoice.ID == 0)
+            //{
+            //    invoice.ID = id;
+            //}
+
+            if (id != invoice.ID)
+            {
+                throw new InvalidOperationException($"URI id ({id}) does not correpond to invoice ID ({invoice.ID}).");
+            }
+            // Is there an invoice with the given ID?
+            bool exists = (MockInvoices().Where(i => i.ID == id).Count() > 0);
+            //if (invoice.ID == 0)
+            if ( ! exists )
+            {
+                // HTTP status code: 404 (Not Found)
+                return NotFound(invoice);
+            }
+
+            // REST API recommends either a status code of 200 (OK) or 204 (No Content) to be returned.
+            // HTTP status code: 200 (OK)
+            //return Ok(invoice);
+            // HTTP status code: 204 (No Content)
+            return NoContent();
         }
 
 
 
         //[HttpDelete]
         //[Route("{id}")]
+        // REST API path: DELETE /invoice/31
         [HttpDelete("{id}")]
         public async Task<IActionResult> Remove(int id)
         {
@@ -111,7 +172,20 @@ namespace SongsAndVotes.Server.Controllers
 
             await Task.Delay(300);
 
-            return AcceptedAtAction(nameof(GetList), new { id = invoice.ID }, invoice);
+            // Is there an invoice with the given ID?
+            bool exists = (MockInvoices().Where(i => i.ID == id).Count() > 0);
+            if ( ! exists )
+            {
+                // HTTP status code: 404 (Not Found)
+                //return NotFound(invoice);
+                return NotFound(new { id = invoice.ID });
+            }
+
+            // HTTP status code 202 (Accepted) is used for queued actions that take a long time to complete.
+            //return AcceptedAtAction(nameof(GetList), new { id = invoice.ID }, invoice);
+            // HTTP status code: 200 (OK)
+            //return Ok(invoice);
+            return Ok(new { id = invoice.ID });
         }
 
 
