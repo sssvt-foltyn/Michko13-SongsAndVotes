@@ -68,7 +68,8 @@ namespace SongsAndVotes.Server.Controllers
 
             //return MockInvoices().First();
             //return MockInvoices().Where(i => i.ID == id).First();
-            Invoice invoice = null;
+            //Invoice invoice = null;
+            Invoice invoice = new Invoice { ID = id };
             try
             {
                 invoice = MockInvoices().Where(i => i.ID == id).First();
@@ -77,7 +78,9 @@ namespace SongsAndVotes.Server.Controllers
             {
                 // No such invoice (non-existing ID).
                 // HTTP status code: 404 (Not Found)
-                return NotFound();
+                //return NotFound();
+                //return NotFound(invoice);
+                return NotFound(new { id = invoice.ID });
             }
             // HTTP status code: 200 (OK)
             return Ok(invoice);
