@@ -17,6 +17,11 @@ namespace SongsAndVotes.Shared
 
 
 
+        /// <summary>Primary key.</summary>
+        public int ID { get; set; }
+
+
+
         /// <summary>Ordinal number of this item on the invoice.</summary>
         public int Ordinal { get; set; }
 

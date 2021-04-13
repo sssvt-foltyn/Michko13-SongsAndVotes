@@ -16,6 +16,11 @@ namespace SongsAndVotes.Shared
 
 
 
+        /// <summary>Primary key.</summary>
+        public int ID { get; set; }
+
+
+
         /// <summary>Number of this invoice.</summary>
         public int InvoiceNumber { get; set; }
 
@@ -38,6 +43,13 @@ namespace SongsAndVotes.Shared
 
         /// <summary>Items of the invoice.</summary>
         public IList<InvoiceItem> InvoiceItems { get; set; }
+
+
+
+        public override string ToString()
+        {
+            return $"ID: {ID}    Invoice number: {InvoiceNumber}    Year: {Year}    Company name: {CompanyName}    Total amount: {TotalAmount}    Date issued: {DateIssued?.ToShortDateString()}    Date due: {DateDue?.ToShortDateString()}";
+        }
 
 
 
