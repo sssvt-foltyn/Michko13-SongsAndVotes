@@ -59,7 +59,8 @@ namespace SongsAndVotes.Server.Controllers
         //[HttpGet("{id}")]
         //public Invoice Load(int id)
         // REST API path: GET /invoice/1
-        [HttpGet("{id}")]
+        //[HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Load(int id)
         {
             _logger.LogInformation(this.ControllerContext.ToCtxString());
@@ -115,7 +116,8 @@ namespace SongsAndVotes.Server.Controllers
         //[HttpPut]
         //[Route("{id}")]
         // REST API path: PUT /invoice/1
-        [HttpPut("{id}")]
+        //[HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Store(int id, [FromForm] Invoice invoice)
         {
             _logger.LogInformation(this.ControllerContext.ToCtxString());
@@ -166,7 +168,8 @@ namespace SongsAndVotes.Server.Controllers
         //[HttpDelete]
         //[Route("{id}")]
         // REST API path: DELETE /invoice/31
-        [HttpDelete("{id}")]
+        //[HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Remove(int id)
         {
             _logger.LogInformation(this.ControllerContext.ToCtxString());
