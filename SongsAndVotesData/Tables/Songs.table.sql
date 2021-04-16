@@ -6,6 +6,7 @@ CREATE TABLE Songs
     UserUploadedID     int                   NULL,
     ArtistID           int                   NULL,
     AlbumID            int                   NULL,
+    AudioFile          nvarchar(max)         NULL,
 
     CONSTRAINT PK_Songs  PRIMARY KEY (ID),
     CONSTRAINT FK_Songs_Albums_AlbumID         FOREIGN KEY (AlbumID)         REFERENCES Albums (ID) ON DELETE NO ACTION,
