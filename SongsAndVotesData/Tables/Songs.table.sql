@@ -4,19 +4,24 @@ CREATE TABLE Songs
     Title              nvarchar(max)     NOT NULL,
     Photo              nvarchar(max)         NULL,
     UserUploadedID     int                   NULL,
-    AlbumID            int                   NULL,
+    PlaylistID         int                   NULL,
     AudioFile          nvarchar(max)         NULL,
+    ArtistID           int                   NULL,
 
     CONSTRAINT PK_Songs  PRIMARY KEY (ID),
-    CONSTRAINT FK_Songs_Albums_AlbumID         FOREIGN KEY (AlbumID)         REFERENCES Albums (ID) ON DELETE NO ACTION,
-    CONSTRAINT FK_Songs_Users_UserUploadedID   FOREIGN KEY (UserUploadedID)  REFERENCES Users (ID) ON DELETE NO ACTION
+    CONSTRAINT FK_Songs_Users_UserUploadedID   FOREIGN KEY (UserUploadedID)   REFERENCES Users (ID)      ON DELETE NO ACTION,
+    CONSTRAINT FK_Songs_Artists_ArtistID       FOREIGN KEY (ArtistID)         REFERENCES Artists (ID)    ON DELETE NO ACTION,
+    CONSTRAINT FK_Songs_Playlists_PlaylistID   FOREIGN KEY (PlaylistID)       REFERENCES Playlists (ID)  ON DELETE NO ACTION
 );
 GO
 
 
-CREATE INDEX IX_Songs_AlbumID ON Songs (AlbumID);
+CREATE INDEX IX_Songs_PlaylistID ON Songs (PlaylistID);
 GO
 
 CREATE INDEX IX_Songs_UserUploadedID ON Songs (UserUploadedID);
+GO
+
+CREATE INDEX IX_Songs_ArtistID ON Songs (ArtistID);
 GO
 
