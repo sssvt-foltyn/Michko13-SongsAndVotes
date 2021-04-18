@@ -1,4 +1,4 @@
-CREATE TABLE User
+CREATE TABLE [User]
 (
     ID              int              NOT NULL    IDENTITY,
     IsAdmin         bit              NOT NULL,

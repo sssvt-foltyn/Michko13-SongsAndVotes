@@ -9,7 +9,7 @@ CREATE TABLE Playlists
 
     CONSTRAINT PK_Playlists  PRIMARY KEY (ID),
     CONSTRAINT FK_Playlists_Artists_ArtistByID     FOREIGN KEY (ArtistByID)  REFERENCES Artists (ID)   ON DELETE NO ACTION,
-    CONSTRAINT FK_Playlists_User_UserByID          FOREIGN KEY (UserByID)    REFERENCES User (ID)      ON DELETE NO ACTION
+    CONSTRAINT FK_Playlists_User_UserByID          FOREIGN KEY (UserByID)    REFERENCES [User] (ID)    ON DELETE NO ACTION
 );
 GO
 

@@ -9,9 +9,9 @@ CREATE TABLE Songs
     ArtistID           int                   NULL,
 
     CONSTRAINT PK_Songs  PRIMARY KEY (ID),
-    CONSTRAINT FK_Songs_Artists_ArtistID       FOREIGN KEY (ArtistID)         REFERENCES Artists (ID)    ON DELETE NO ACTION,
-    CONSTRAINT FK_Songs_Playlists_PlaylistID   FOREIGN KEY (PlaylistID)       REFERENCES Playlists (ID)  ON DELETE NO ACTION,
-    CONSTRAINT FK_Songs_User_UserID            FOREIGN KEY (UserID)           REFERENCES User (ID)       ON DELETE NO ACTION
+    CONSTRAINT FK_Songs_Artists_ArtistID       FOREIGN KEY (ArtistID)         REFERENCES Artists (ID)      ON DELETE NO ACTION,
+    CONSTRAINT FK_Songs_Playlists_PlaylistID   FOREIGN KEY (PlaylistID)       REFERENCES Playlists (ID)    ON DELETE NO ACTION,
+    CONSTRAINT FK_Songs_User_UserID            FOREIGN KEY (UserID)           REFERENCES [User] (ID)       ON DELETE NO ACTION
 );
 GO
 
