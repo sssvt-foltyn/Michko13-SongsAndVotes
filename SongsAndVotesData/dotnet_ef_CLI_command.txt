@@ -1,0 +1,5 @@
+REM cd to the root dir of the solution
+REM cd C:\pfoltyn\Novak_example\MyStudentsProjects_SSH\P3B_gr1\Kopecky\SongsAndVotes
+
+dotnet ef migrations script --project SongsAndVotes\Server --no-transactions --output SongsAndVotesData\CreateDBSchema_Initial_Change1_Change2_Change3_change4.sql
+
