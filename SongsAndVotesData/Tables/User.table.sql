@@ -1,4 +1,4 @@
-CREATE TABLE Users
+CREATE TABLE User
 (
     ID              int              NOT NULL    IDENTITY,
     IsAdmin         bit              NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE Users
     Photo           nvarchar(max)        NULL,
     DateOfBirth     datetime2            NULL,
 
-    CONSTRAINT PK_Users  PRIMARY KEY (ID)
+    CONSTRAINT PK_User  PRIMARY KEY (ID)
 );
 GO
 
